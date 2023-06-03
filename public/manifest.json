@@ -1,0 +1,17 @@
+{
+  "lang": "en-us",
+  "name": "chat.saricden",
+  "short_name": "chat.saricden",
+  "description": "A demo chat server to showcase my Hashnode x Appwrite hackathon project.",
+  "start_url": "/",
+  "background_color": "#FFFFFF",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "display": "standalone",
+  "icons": [
+      {
+          "src": "/icon512.png",
+          "sizes": "512x512"
+      }
+  ]
+}

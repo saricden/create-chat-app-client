@@ -7,8 +7,10 @@
 ☐ PWA
 ☐ Desktop styling
 ☐ Push notifications (fuck u iOS)
+  ☐ User menu link to notifications page, with option to enable push there
 ☐ Press enter to submit stuff
 ☐ Heart messages
 ☐ Edit profile
 ☐ Settings
-☐ 
+☐ Markdown support
+☐ Auto-resize textarea for MessageBar
