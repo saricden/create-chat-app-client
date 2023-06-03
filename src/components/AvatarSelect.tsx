@@ -1,8 +1,5 @@
 import { ChangeEvent, useRef, useState } from 'react';
 import iconUpload from '../assets/upload.svg';
-import { ID, account, storage } from '../utils/appwrite';
-import config from '../../jabberbase.config.json';
-
 
 interface AvatarSelectProps {
   className?: string

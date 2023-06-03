@@ -7,7 +7,7 @@ import { Loader } from '../components/Loader';
 import { getQueryParam, isEmailValid } from '../utils/helpers';
 import { Checkmark } from '../components/Checkmark';
 import { redirect } from 'react-router-dom';
-import { userHasProfile, userIsLoggedIn } from '../utils/account';
+import { userIsLoggedIn } from '../utils/account';
 
 export function Login() {
   const [loading, setLoading] = useState(false);

@@ -2,7 +2,6 @@ import nl2br from "react-nl2br";
 import { Navbar } from "../components/Navbar";
 import config from '../../jabberbase.config.json';
 import { AvatarSelect } from "../components/AvatarSelect";
-import { account } from "../utils/appwrite";
 import { redirect, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Input } from "../components/Input";
@@ -12,7 +11,6 @@ import { register, userHasProfile, userIsLoggedIn } from "../utils/account";
 
 export function Register() {
   const navigate = useNavigate();
-  const [locked, setLocked] = useState(false);
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
   const [avatarFile, setAvatarFile] = useState<any>(null);
@@ -49,8 +47,6 @@ export function Register() {
           <Button
             label="Join server"
             onClick={joinServer}
-            disabled={locked}
-            pulse={locked}
           />
         </div>
 
