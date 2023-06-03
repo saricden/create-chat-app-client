@@ -72,7 +72,7 @@ export function Navbar({ locked, channels, user }: NavbarProps) {
               }}
             />
             
-            <div className={`text-xl transition-all delay-150 ${!open ? '-translate-x-1/2' : ''}`}>
+            <div className={`text-xl transition-all delay-150 ${!open ? 'opacity-0 -translate-x-1/2' : ''}`}>
               @{user.username}
             </div>
           </div>
