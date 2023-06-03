@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  background-color: #FFF;
+}
+
 .loader {
   width: 48px;
   height: 48px;

@@ -29,6 +29,12 @@ export function Navbar({ locked, channels, user }: NavbarProps) {
   if (locked) {
     return (
       <nav className={`z-50 bg-black text-white text-xl fixed top-0 left-0 w-full h-14 flex items-center justify-center`}>
+        <img
+          className={`w-7 h-7 rounded-full mr-2`}
+          src="/icon.png"
+          alt=""
+        />
+
         <h1>{config.serverName}</h1>
       </nav>
     );
@@ -37,6 +43,12 @@ export function Navbar({ locked, channels, user }: NavbarProps) {
   return (
     <>
       <nav className={`z-50 bg-black text-white text-xl fixed top-0 left-0 w-full h-14 px-3 flex items-center justify-start`}>
+        <img
+          className={`w-7 h-7 rounded-full mr-2`}
+          src="/icon.png"
+          alt=""
+        />
+
         <h1>{config.serverName}</h1>
 
         <button
