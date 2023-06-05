@@ -250,7 +250,7 @@ export function Chats() {
                 }
 
                 <motion.div
-                  className={`relative overflow-visible w-full p-2 border-2 border-black rounded-md ${msg.user_id === user.auth_id ? 'bg-black text-white mr-5' : 'bg-white text-black ml-7'}`}
+                  className={`relative overflow-visible p-2 border-2 border-black rounded-md ${msg.user_id === user.auth_id ? 'bg-black text-white mr-5' : 'bg-white text-black ml-7'}`}
                   initial={{
                     opacity: 0,
                     translateX: (msg.user_id === user.auth_id ? '50%' : '-50%')

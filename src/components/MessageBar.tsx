@@ -16,7 +16,7 @@ export function MessageBar({ msg, onChange, onSend, onReact}: MessageBarProps) {
   return (
     <div className={`fixed h-20 bottom-0 left-0 w-full p-2 flex flex-row items-end bg-gradient-to-t from-white to-white/0`}>
       <TextareaAutosize
-        className={`min-h-12 border-2 border-black p-2 rounded-md flex-1 mr-2 outline-none`}
+        className={`min-h-12 border-2 border-black p-2 rounded-md flex-1 mr-2 outline-none resize-none`}
         value={msg}
         onChange={onChange}
         maxRows={4}
