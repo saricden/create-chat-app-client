@@ -1,4 +1,4 @@
-☐ Scroll up to load next page of messages
+✔ Scroll up to load next page of messages @done(23-06-05 00:15)
 ☐ Tap other user avatar -> profile slide up
 ☐ GPT bot
 ☐ Admin tools
@@ -13,4 +13,5 @@
 ☐ Edit profile
 ☐ Settings
 ☐ Markdown support
-☐ Auto-resize textarea for MessageBar
+✔ Auto-resize textarea for MessageBar @done(23-06-04 23:26)
+✔ Nl2br for multiline messages @done(23-06-04 23:32)

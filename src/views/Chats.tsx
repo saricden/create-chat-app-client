@@ -11,6 +11,7 @@ import novatar from '../assets/novatar.jpg';
 import { MessageBar } from '../components/MessageBar';
 import { ID, db } from '../utils/appwrite';
 import { motion } from 'framer-motion';
+import nl2br from 'react-nl2br';
 
 export function Chats() {
   // @ts-ignore
@@ -24,6 +25,9 @@ export function Chats() {
   const [userCache, setUserCache] = useState<any>({});
   const [message, setMessage] = useState('');
   const messagePanelRef = useRef<HTMLDivElement>(null);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [page, setPage] = useState(0);
+  const [messagesPanelScrollHeight, setMessagePanelScrollHeight] = useState(0);
 
   function cacheUser(userId: string, userData: any) {
     setUserCache((cache: any) => ({
@@ -61,6 +65,61 @@ export function Chats() {
       });
     }
   }
+
+  async function loadMoreMessages() {
+    setLoadingMessages(true);
+
+    const nextPage = (page + 1);
+    const {$id: channelId} = currentChannel;
+    const nextMessages = await getLatestMessages(channelId, nextPage);
+
+    nextMessages.forEach(async (msg: any) => {
+      if (userCache[msg.user_id] === undefined) {
+        const userData = await getUserData(msg.user_id);
+
+        cacheUser(msg.user_id, userData);
+      }
+    });
+
+    const channelMessages = [
+      ...nextMessages,
+      ...currentMessages
+    ];
+
+    setMessages({
+      ...messages,
+      [channelId]: channelMessages
+    });
+    setPage(nextPage);
+    setLoadingMessages(false);
+  }
+
+  function handleMessageScroll(e: any) {
+    const {scrollTop} = e.target;
+
+    if (scrollTop === 0) {
+      loadMoreMessages();
+    }
+  }
+
+  useEffect(() => {
+    if (messagePanelRef && messagePanelRef.current) {
+      const {scrollHeight} = messagePanelRef.current;
+      const scrollDiff = (scrollHeight - messagesPanelScrollHeight - 64);
+
+      messagePanelRef.current.scrollTo({
+        top: scrollDiff,
+        behavior: 'auto'
+      });
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (messagePanelRef && messagePanelRef.current) {
+      const {scrollHeight} = messagePanelRef.current;
+      setMessagePanelScrollHeight(scrollHeight);
+    }
+  }, [currentMessages]);
 
   useEffect(() => {
     async function hydrateMessages() {
@@ -122,7 +181,14 @@ export function Chats() {
       <div
         className={`h-screen w-full flex flex-col items-start justify-start p-4 pt-32 pb-16 overflow-y-scroll`}
         ref={messagePanelRef}
+        onScroll={handleMessageScroll}
       >
+        {
+          loadingMessages &&
+          <div className={`w-full flex items-center justify-center mb-4`}>
+            <Loader />
+          </div>
+        }
         {
           currentMessages && currentMessages.map((msg: any) => {
             const msgUser = userCache[msg.user_id];
@@ -159,7 +225,7 @@ export function Chats() {
                     translateX: 0
                   }}
                 >
-                  {msg.message}
+                  {nl2br(msg.message)}
 
                   {
                     msg.user_id === user.auth_id

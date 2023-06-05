@@ -15,7 +15,7 @@ export async function getChannels() {
   return null;
 }
 
-export async function getLatestMessages(channelId: string) {
+export async function getLatestMessages(channelId: string, page: number = 0) {
   try {
     const messagesData = await db.listDocuments(
       config.databaseId,
@@ -23,6 +23,7 @@ export async function getLatestMessages(channelId: string) {
       [
         q.equal('channel_id', [channelId]),
         q.orderDesc('posted_at'),
+        q.offset(page * 30),
         q.limit(30)
       ]
     );
