@@ -8,12 +8,12 @@
 ☐ Desktop styling
 ☐ Push notifications (fuck u iOS)
   ☐ User menu link to notifications page, with option to enable push there
+  ☐ User @ tagging w/ notifications
 ☐ Press enter to submit stuff
 ☐ Heart messages
 ☐ Edit profile
 ☐ Settings
 ☐ Markdown support
-☐ User @ tagging w/ notifications
 ✔ Auto-resize textarea for MessageBar @done(23-06-04 23:26)
 ✔ Nl2br for multiline messages @done(23-06-04 23:32)
 ✔ Fix slow speed when changing channels (re-fetching data in loader) @done(23-06-05 01:58)

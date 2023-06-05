@@ -32,7 +32,7 @@ export function Register() {
           <p className={`text-lg mb-6`}>{nl2br(config.welcomeMessage)}</p>
 
           <AvatarSelect
-            className="mb-6"
+            className="mb-6 border-black"
             onSelect={(file: any) => setAvatarFile(file)}
           />
 
