@@ -3,7 +3,7 @@ import config from '../../jabberbase.config.json';
 import novatar from '../assets/novatar.jpg';
 import { ChannelBtn } from './ChannelBtn';
 import { useState } from 'react';
-import { ArrowLeft, ArrowRight, X } from 'react-feather';
+import { ArrowLeft, X } from 'react-feather';
 import { logout } from '../utils/account';
 import { MyProfile } from '../views/user/MyProfile';
 import { Notifications } from '../views/user/Notifications';

@@ -3,7 +3,7 @@ interface MyProfileProps {
   user: any
 }
 
-export function MyProfile({ user }: MyProfileProps) {
+export function MyProfile({ }: MyProfileProps) {
 
   return (
     <div className={``}>

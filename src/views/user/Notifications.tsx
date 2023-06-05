@@ -3,7 +3,7 @@ interface NotificationsProps {
   user: any
 }
 
-export function Notifications({ user }: NotificationsProps) {
+export function Notifications({ }: NotificationsProps) {
 
   return (
     <div className={``}>
