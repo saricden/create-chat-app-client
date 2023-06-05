@@ -307,7 +307,7 @@ export function Chats() {
         onClick={() => setProfileOpen(false)}
       />
 
-      <div className={`z-50 fixed left-0 bottom-0 w-full h-2/3 p-3 pt-12 bg-black text-white flex flex-col h-full items-center justify-start rounded-t-md transition-all ${profileOpen ? '' : 'translate-y-full'}`}>
+      <div className={`z-50 fixed left-0 bottom-0 w-full h-2/3 p-3 pt-12 bg-black text-white flex flex-col items-center justify-start rounded-t-md transition-all ${profileOpen ? '' : 'translate-y-full'}`}>
         <button
           className={`absolute right-3 top-3`}
           onClick={() => setProfileOpen(false)}
