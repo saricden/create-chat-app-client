@@ -59,9 +59,7 @@ export function MyProfile({ user }: MyProfileProps) {
 
   return (
     <div className={`flex flex-col h-full items-center justify-center`}>
-      <img
-        src={user.avatar}
-        alt={`${user.username}'s profile picture.`}
+      <div
         className={`w-32 h-32 border-2 border-white rounded-md bg-cover bg-center mb-4`}
         style={{
           backgroundImage: `url(${user.avatar})`
