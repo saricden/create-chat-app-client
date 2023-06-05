@@ -22,13 +22,13 @@ export async function getLatestMessages(channelId: string) {
       config.messagesCollectionId,
       [
         q.equal('channel_id', [channelId]),
-        q.orderAsc('posted_at'),
+        q.orderDesc('posted_at'),
         q.limit(30)
       ]
     );
     const {documents: messages} = messagesData;
 
-    return messages;
+    return messages.reverse();
   }
   catch (e) {
     console.warn(e);

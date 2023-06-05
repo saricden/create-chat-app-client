@@ -95,6 +95,30 @@ export function Navbar({ locked, channels, user }: NavbarProps) {
         </div>
 
         <button
+          className={`w-full mt-8 px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-100 ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+        >
+          Notifications
+        </button>
+
+        <button
+          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-150 ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+        >
+          My Profile
+        </button>
+
+        <button
+          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-200 ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+        >
+          Settings
+        </button>
+
+        <button
+          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-300 ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+        >
+          Admin
+        </button>
+
+        <button
           className={`w-full mt-auto px-4 py-2 border-2 border-red-500 rounded-md text-red-500 text-center`}
           onClick={() => setLogoutOpen(true)}
         >
