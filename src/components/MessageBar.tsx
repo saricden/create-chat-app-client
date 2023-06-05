@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, useRef } from "react";
 import iconSend from '../assets/icons/send.svg';
 import iconHeart from '../assets/icons/heart.svg';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -12,6 +12,17 @@ interface MessageBarProps {
 
 export function MessageBar({ msg, onChange, onSend, onReact}: MessageBarProps) {
   const doReact = (msg.trim().length === 0);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  function handleSend() {
+    if (doReact) {
+      onReact();
+    }
+    else {
+      onSend();
+      inputRef.current?.focus();
+    }
+  }
   
   return (
     <div className={`fixed h-20 bottom-0 left-0 w-full p-2 flex flex-row items-end bg-gradient-to-t from-white to-white/0`}>
@@ -20,11 +31,12 @@ export function MessageBar({ msg, onChange, onSend, onReact}: MessageBarProps) {
         value={msg}
         onChange={onChange}
         maxRows={4}
+        ref={inputRef}
       />
 
       <button
         className={`w-[44px] h-[44px] bg-black rounded-md flex items-center justify-center overflow-hidden`}
-        onClick={() => doReact ? onReact() : onSend()}
+        onClick={handleSend}
       >
         {
           doReact
