@@ -3,8 +3,10 @@ import config from '../../jabberbase.config.json';
 import novatar from '../assets/novatar.jpg';
 import { ChannelBtn } from './ChannelBtn';
 import { useState } from 'react';
-import { X } from 'react-feather';
+import { ArrowLeft, ArrowRight, X } from 'react-feather';
 import { logout } from '../utils/account';
+import { MyProfile } from '../views/user/MyProfile';
+import { Notifications } from '../views/user/Notifications';
 
 interface NavbarProps {
   locked?: boolean
@@ -19,11 +21,22 @@ export function Navbar({ locked, channels, user }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menu, setMenu] = useState<any>(null);
 
   async function confirmLogout() {
     setLoggingOut(true);
     await logout();
     navigate('/');
+  }
+
+  function openMenu(m: any) {
+    setMenu(m);
+    setMenuOpen(true);
+  }
+
+  function closeMenu() {
+    setMenuOpen(false);
   }
 
   if (locked) {
@@ -75,7 +88,7 @@ export function Navbar({ locked, channels, user }: NavbarProps) {
       </nav>
 
       <div className={`z-50 bg-black text-white fixed top-0 right-0 flex flex-col w-full h-full p-3 transition-all ${open ? '' : 'translate-x-full'}`}>
-        <div className={`w-full flex flex-row items-center justify-between`}>
+        <div className={`w-full flex flex-row items-center justify-between overflow-x-hidden`}>
           <div className={`flex flex-row items-center`}>
             <button
               className={`w-9 h-9 bg-cover bg-center rounded-md border-2 border-white mr-3 transition-all opacity-0 ${open ? 'opacity-100' : ''}`}
@@ -89,41 +102,76 @@ export function Navbar({ locked, channels, user }: NavbarProps) {
             </div>
           </div>
 
-          <button onClick={() => setOpen(false)}>
-            <X size={28} />
+          {
+            menuOpen
+            ? <button onClick={closeMenu}>
+                <ArrowLeft size={28} />
+              </button>
+            : <button onClick={() => setOpen(false)}>
+                <X size={28} />
+              </button>
+          }
+        </div>
+
+        <div className={`absolute top-14 left-0 w-full p-3 flex flex-col transition-all`} style={{
+          transform: menuOpen ? 'translateX(calc(-100% - 12px))' : '',
+          visibility: menuOpen ? 'hidden' : 'visible',
+          height: 'calc(100% - 56px)'
+        }}>
+          <button
+            className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-100 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+            onClick={() => openMenu('Notifications')}
+          >
+            Notifications
+          </button>
+
+          <button
+            className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-150 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+            onClick={() => openMenu('MyProfile')}
+          >
+            My Profile
+          </button>
+
+          <button
+            className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-200 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+          >
+            Settings
+          </button>
+
+          <button
+            className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-300 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+          >
+            Admin
+          </button>
+
+          <button
+            className={`w-full mt-auto px-4 py-2 border-2 border-red-500 rounded-md text-red-500 text-center`}
+            onClick={() => setLogoutOpen(true)}
+          >
+            Logout
           </button>
         </div>
 
-        <button
-          className={`w-full mt-8 px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-100 ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
-        >
-          Notifications
-        </button>
+        <div className={`absolute top-14 left-0 w-full p-3 flex flex-1 flex-col transition-all`} style={{
+          transform: menuOpen ? '' : 'translateX(calc(100% + 12px))',
+          visibility: menuOpen ? 'visible' : 'hidden',
+          height: 'calc(100% - 56px)'
+        }}>
+          {
+            menu === 'Notifications' &&
+            <Notifications
+              user={user}
+            />
+          }
 
-        <button
-          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-150 ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
-        >
-          My Profile
-        </button>
-
-        <button
-          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-200 ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
-        >
-          Settings
-        </button>
-
-        <button
-          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-300 ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
-        >
-          Admin
-        </button>
-
-        <button
-          className={`w-full mt-auto px-4 py-2 border-2 border-red-500 rounded-md text-red-500 text-center`}
-          onClick={() => setLogoutOpen(true)}
-        >
-          Logout
-        </button>
+          {
+            menu === 'MyProfile' &&
+            <MyProfile
+              user={user}
+            />
+          }
+          
+        </div>
       </div>
 
       <div className={`z-50 fixed top-0 left-0 w-full h-full p-6 bg-black text-white flex flex-col items-center justify-center transition-all ${logoutOpen ? '' : 'opacity-0 scale-75 translate-y-full'}`}>
