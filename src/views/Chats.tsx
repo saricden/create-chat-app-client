@@ -234,7 +234,7 @@ export function Chats() {
                 {
                   msg.user_id !== user.auth_id &&
                   <motion.button
-                    className={`w-9 h-9 shrink-0 bg-cover bg-center rounded-md border-2 border-black`}
+                    className={`w-9 h-9 shrink-0 bg-cover bg-center rounded-md border-2 border-black ${loadingUser ? 'animate-pulse' : ''}`}
                     style={{
                       backgroundImage: (!loadingUser && msgUser.avatar) ? `url(${msgUser.avatar})` : `url(${novatar})`
                     }}
@@ -267,12 +267,12 @@ export function Chats() {
                     ? <img
                         src={iconArrowBlack}
                         alt=""
-                        className={`absolute top-[10px] right-[1px] translate-x-full`}
+                        className={`absolute top-[10px] right-[2px] translate-x-full`}
                       />
                     : <img
                         src={iconArrowWhite}
                         alt=""
-                        className={`absolute top-[10px] left-[1px] -translate-x-full`}
+                        className={`absolute top-[10px] left-[2px] -translate-x-full`}
                       />
                   }
                 </motion.div>
