@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useRef } from "react";
+import { ChangeEventHandler, useRef, useState } from "react";
 import iconSend from '../assets/icons/send.svg';
 import iconHeart from '../assets/icons/heart.svg';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -13,6 +13,7 @@ interface MessageBarProps {
 export function MessageBar({ msg, onChange, onSend, onReact}: MessageBarProps) {
   const doReact = (msg.trim().length === 0);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [focused, setFocused] = useState(false);
 
   function handleSend() {
     if (doReact) {
@@ -20,8 +21,19 @@ export function MessageBar({ msg, onChange, onSend, onReact}: MessageBarProps) {
     }
     else {
       onSend();
+    }
+
+    if (focused) {
       inputRef.current?.focus();
     }
+  }
+
+  function delayedBlur() {
+    setTimeout(() => {
+      if (document.activeElement !== inputRef.current) {
+        setFocused(false);
+      }
+    }, 100);
   }
   
   return (
@@ -32,6 +44,8 @@ export function MessageBar({ msg, onChange, onSend, onReact}: MessageBarProps) {
         onChange={onChange}
         maxRows={4}
         ref={inputRef}
+        onFocus={() => setFocused(true)}
+        onBlur={delayedBlur}
       />
 
       <button
