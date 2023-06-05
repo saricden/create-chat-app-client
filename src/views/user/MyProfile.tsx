@@ -12,6 +12,8 @@ export function MyProfile({ user }: MyProfileProps) {
   const [username, setUsername] = useState<string>(user.username);
   const [bio, setBio] = useState<string>(user.bio || '(no bio yet)');
 
+  console.log(avatarFile);
+
   if (editing) {
     return (
       <div className={`flex flex-col h-full items-center justify-center`}>
