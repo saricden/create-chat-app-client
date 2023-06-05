@@ -1,18 +1,47 @@
 import { useState } from "react";
 import { AvatarSelect } from "../../components/AvatarSelect";
 import { Input } from "../../components/Input";
+import { getUserData, updateUser } from "../../utils/account";
+import { Loader } from "../../components/Loader";
+import nl2br from "react-nl2br";
 
 interface MyProfileProps {
   user: any
+  onUpdate: Function
 }
 
-export function MyProfile({ user }: MyProfileProps) {
+export function MyProfile({ user, onUpdate }: MyProfileProps) {
   const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [avatarFile, setAvatarFile] = useState<any>(null);
   const [username, setUsername] = useState<string>(user.username);
-  const [bio, setBio] = useState<string>(user.bio || '(no bio yet)');
+  const [bio, setBio] = useState<string | undefined>(user.bio ? user.bio : undefined);
 
-  console.log(avatarFile);
+  async function saveProfile() {
+    setSaving(true);
+
+    await updateUser(
+      user.auth_id,
+      username,
+      bio ? bio : null,
+      avatarFile
+    );
+
+    const updatedUserData = await getUserData(user.auth_id);
+
+    onUpdate(updatedUserData);
+
+    setSaving(false);
+    setEditing(false);
+  }
+
+  if (saving) {
+    return (
+      <div className={`h-full flex items-center justify-center`}>
+        <Loader color="#FFF" message="Saving profile..." />
+      </div>
+    );
+  }
 
   if (editing) {
     return (
@@ -43,7 +72,7 @@ export function MyProfile({ user }: MyProfileProps) {
 
         <button
           className={`w-full mt-auto px-4 py-2 border-2 rounded-md mb-3 border-green-500 text-green-500 text-center`}
-          onClick={() => setEditing(true)}
+          onClick={saveProfile}
         >
           Save Profile
         </button>
@@ -68,7 +97,7 @@ export function MyProfile({ user }: MyProfileProps) {
       
       <h1 className={`text-2xl mb-4`}>@{user.username}</h1>
 
-      <p>{user.bio || "(no bio yet)"}</p>
+      <p>{nl2br(user.bio) || "(no bio yet)"}</p>
       
       <button
         className={`w-full mt-auto px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center`}

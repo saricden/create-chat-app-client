@@ -12,9 +12,10 @@ interface NavbarProps {
   locked?: boolean
   channels?: any
   user?: any
+  onUserUpdate?: Function
 }
 
-export function Navbar({ locked, channels, user }: NavbarProps) {
+export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const {pathname: path} = location;
@@ -168,6 +169,7 @@ export function Navbar({ locked, channels, user }: NavbarProps) {
             menu === 'MyProfile' &&
             <MyProfile
               user={user}
+              onUpdate={onUserUpdate!}
             />
           }
           

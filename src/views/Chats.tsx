@@ -211,6 +211,7 @@ export function Chats() {
       <Navbar
         user={user}
         channels={channels}
+        onUserUpdate={(user: any) => setUser(user)}
       />
 
       <div

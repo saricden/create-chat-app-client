@@ -6,7 +6,6 @@ import config from '../../jabberbase.config.json';
  * 
  * {
  *   avatar: string - URL of profile picture
- *   profilePictures: string[] - File IDs of all profile pictures
  *   username: string - Current username
  * }
  *
@@ -125,4 +124,54 @@ export async function register(username: string, avatarFile: any) {
   catch (e) {
     console.warn(e);
   }
+}
+
+export async function updateUser(authId: string, username: string, bio: string | null = null, avatarFile: any = null) {
+  try {
+    // Probs need to refactor this as a server function... Safety third.
+    let patch: any = {
+      username,
+      bio
+    };
+
+    if (avatarFile) {
+      const userData = await getUserData(authId);
+
+      const { avatar_id: oldAvatarId } = userData;
+
+      await storage.deleteFile(config.profilePicturesBucketId, oldAvatarId);
+
+      const file = await storage.createFile(config.profilePicturesBucketId, ID.unique(), avatarFile);
+
+      patch = {
+        ...patch,
+        avatar_id: file.$id
+      };
+    }
+
+    const userData = await db.listDocuments(
+      config.databaseId,
+      config.usersCollectionId,
+      [
+        q.equal('auth_id', [authId])
+      ]
+    );
+    console.log(userData);
+    const [user] = userData.documents;
+    const {$id: userId} = user;
+
+    await db.updateDocument(
+      config.databaseId,
+      config.usersCollectionId,
+      userId,
+      patch
+    );
+
+    return true;
+  }
+  catch (e) {
+    console.warn(e);
+  }
+
+  return false;
 }
