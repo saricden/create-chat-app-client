@@ -3,7 +3,7 @@ import { AvatarSelect } from "../../components/AvatarSelect";
 import { Input } from "../../components/Input";
 import { getUserData, updateUser } from "../../utils/account";
 import { Loader } from "../../components/Loader";
-import nl2br from "react-nl2br";
+import { UserProfile } from "../../components/UserProfile";
 
 interface MyProfileProps {
   user: any
@@ -88,16 +88,8 @@ export function MyProfile({ user, onUpdate }: MyProfileProps) {
 
   return (
     <div className={`flex flex-col h-full items-center justify-center`}>
-      <div
-        className={`w-32 h-32 border-2 border-white rounded-md bg-cover bg-center mb-4`}
-        style={{
-          backgroundImage: `url(${user.avatar})`
-        }}
-      />
       
-      <h1 className={`text-2xl mb-4`}>@{user.username}</h1>
-
-      <p>{nl2br(user.bio) || "(no bio yet)"}</p>
+      <UserProfile user={user} />
       
       <button
         className={`w-full mt-auto px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center`}

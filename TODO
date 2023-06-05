@@ -1,5 +1,5 @@
 ✔ Scroll up to load next page of messages @done(23-06-05 00:15)
-☐ Tap other user avatar -> profile slide up
+✔ Tap other user avatar -> profile slide up @done(23-06-05 10:26)
 ☐ GPT-3.5 bot
 ☐ Admin tools
   ☐ Create / edit channels
@@ -11,7 +11,7 @@
   ☐ User @ tagging w/ notifications
 ☐ Press enter to submit stuff
 ☐ Heart messages
-☐ Edit profile
+✔ Edit profile @done(23-06-05 10:08)
 ☐ Settings
 ☐ Markdown support
 ✔ Auto-resize textarea for MessageBar @done(23-06-04 23:26)

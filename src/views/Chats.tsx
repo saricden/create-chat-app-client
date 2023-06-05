@@ -12,6 +12,8 @@ import { MessageBar } from '../components/MessageBar';
 import { ID, db } from '../utils/appwrite';
 import { motion } from 'framer-motion';
 import nl2br from 'react-nl2br';
+import { UserProfile } from '../components/UserProfile';
+import { X } from 'react-feather';
 
 export function Chats() {
   const navigate = useNavigate();
@@ -30,6 +32,8 @@ export function Chats() {
   const [page, setPage] = useState(0);
   const [messagesPanelScrollHeight, setMessagePanelScrollHeight] = useState(0);
   const [lockScroll, setLockScroll] = useState(true);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [profile, setProfile] = useState<any>(null);
 
   function cacheUser(userId: string, userData: any) {
     setUserCache((cache: any) => ({
@@ -109,6 +113,13 @@ export function Chats() {
     }
     else {
       setLockScroll(false);
+    }
+  }
+
+  function viewProfile(userId: string) {
+    if (userCache[userId]) {
+      setProfile(userCache[userId]);
+      setProfileOpen(true);
     }
   }
 
@@ -247,6 +258,7 @@ export function Chats() {
                       translateY: 0,
                       opacity: 1
                     }}
+                    onClick={() => !loadingUser && viewProfile(msg.user_id)}
                   />
                 }
 
@@ -289,6 +301,22 @@ export function Chats() {
         onSend={sendMessage}
         onReact={sendReaction}
       />
+
+      <div
+        className={`z-50 bg-transparent fixed top-0 left-0 w-full h-full ${profileOpen ? 'visible' : 'hidden'}`}
+        onClick={() => setProfileOpen(false)}
+      />
+
+      <div className={`z-50 fixed left-0 bottom-0 w-full h-2/3 p-3 pt-12 bg-black text-white flex flex-col h-full items-center justify-start rounded-t-md transition-all ${profileOpen ? '' : 'translate-y-full'}`}>
+        <button
+          className={`absolute right-3 top-3`}
+          onClick={() => setProfileOpen(false)}
+        >
+          <X size={28} />
+        </button>
+
+        <UserProfile user={profile} />
+      </div>
     </>
   );
 }
