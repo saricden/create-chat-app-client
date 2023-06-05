@@ -13,5 +13,8 @@
 ☐ Edit profile
 ☐ Settings
 ☐ Markdown support
+☐ User @ tagging w/ notifications
 ✔ Auto-resize textarea for MessageBar @done(23-06-04 23:26)
 ✔ Nl2br for multiline messages @done(23-06-04 23:32)
+☐ Fix slow speed when changing channels (re-fetching data in loader)
+☐ If scrolled to bottom of messages, 'lock' UI so that it'll auto scroll to the bottom as new messages come in

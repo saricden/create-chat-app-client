@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Login, loginLoader } from './views/Login';
 import { Preferences } from './views/Preferences';
-import { BootView, Chats, bootServer, chatLoader } from './views/Chats';
+import { BootView, Chats, bootServer } from './views/Chats';
 import { Register, registerLoader } from "./views/Register";
 
 const router = createBrowserRouter([
@@ -17,8 +17,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/c/:channel",
-    element: <Chats />,
-    loader: chatLoader
+    element: <Chats />
   },
   {
     path: "/u/register",

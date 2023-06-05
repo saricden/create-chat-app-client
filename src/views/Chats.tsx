@@ -1,4 +1,4 @@
-import { redirect, useLoaderData, useLocation } from 'react-router-dom';
+import { redirect, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 import { Loader } from '../components/Loader';
 import config from '../../jabberbase.config.json';
@@ -14,14 +14,15 @@ import { motion } from 'framer-motion';
 import nl2br from 'react-nl2br';
 
 export function Chats() {
-  // @ts-ignore
-  const { user, channels } = useLoaderData();
+  const navigate = useNavigate();
+  const [user, setUser] = useState<any>(null);
+  const [channels, setChannels] = useState<any>([]);
   const location = useLocation();
   const [messages, setMessages] = useState<any>({}); // [channelId] => message[]
   const {pathname: path} = location;
   const currentSlug = path.slice(3);
   const currentChannel = channels.find((c: any) => c.slug === currentSlug);
-  const currentMessages: any = messages[currentChannel.$id];
+  const currentMessages: any = (currentChannel === undefined) ? [] : messages[currentChannel.$id];
   const [userCache, setUserCache] = useState<any>({});
   const [message, setMessage] = useState('');
   const messagePanelRef = useRef<HTMLDivElement>(null);
@@ -122,8 +123,16 @@ export function Chats() {
   }, [currentMessages]);
 
   useEffect(() => {
-    async function hydrateMessages() {
+    async function initChats() {
+      const user = await getUserData();
+      const channels = await getChannels();
       let initMessages: any = {};
+
+      if (user === null) {
+        navigate('/', {
+          replace: true
+        });
+      }
 
       for (let i = 0; i < channels.length; i++) {
         const {$id: channelId}: any = channels[i];
@@ -139,12 +148,14 @@ export function Chats() {
           }
         });
 
+        setUser(user);
+        setChannels(channels);
         setMessages(initMessages);
         scrollToBottom();
       }
     }
 
-    hydrateMessages();
+    initChats();
 
     addMessageListener(async ({events, payload: msg}: any) => {
       const event = events[0].split('.')[events[0].split('.').length - 1];
@@ -170,6 +181,12 @@ export function Chats() {
       }
     });
   }, []);
+
+  if (!user) {
+    return (
+      <BootView />
+    );
+  }
 
   return (
     <>
@@ -255,17 +272,6 @@ export function Chats() {
       />
     </>
   );
-}
-
-export async function chatLoader() {
-  const user = await getUserData();
-  const channels = await getChannels();
-
-  if (!user.username || user.username.length === 0) {
-    return redirect('/u/register');
-  }
-
-  return { user, channels };
 }
 
 export async function bootServer() {
