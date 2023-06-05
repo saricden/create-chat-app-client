@@ -29,6 +29,7 @@ export function Chats() {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [page, setPage] = useState(0);
   const [messagesPanelScrollHeight, setMessagePanelScrollHeight] = useState(0);
+  const [lockScroll, setLockScroll] = useState(true);
 
   function cacheUser(userId: string, userData: any) {
     setUserCache((cache: any) => ({
@@ -51,18 +52,19 @@ export function Chats() {
     );
 
     setMessage('');
+    setLockScroll(true);
   }
 
   function sendReaction() {
     console.log('todo');
   }
 
-  function scrollToBottom() {
+  function scrollToBottom(behavior: 'auto' | 'smooth') {
     if (messagePanelRef && messagePanelRef.current) {
       const {current} = messagePanelRef;
       current.scrollTo({
         top: current.scrollHeight,
-        behavior: 'smooth'
+        behavior
       });
     }
   }
@@ -96,10 +98,37 @@ export function Chats() {
   }
 
   function handleMessageScroll(e: any) {
-    const {scrollTop} = e.target;
+    const {scrollTop, scrollHeight, clientHeight} = e.target;
 
     if (scrollTop === 0) {
       loadMoreMessages();
+    }
+    
+    if (Math.abs(scrollHeight - scrollTop - clientHeight) < 1) {
+      setLockScroll(true);
+    }
+    else {
+      setLockScroll(false);
+    }
+  }
+
+  async function handleNewMessage({events, payload: msg}: any) {
+    const event = events[0].split('.')[events[0].split('.').length - 1];
+
+    if (event === 'create') {
+      setMessages((m: any) => ({
+        ...m,
+        [currentChannel.$id]: [
+          ...m[currentChannel.$id],
+          msg
+        ]
+      }));
+
+      if (userCache[msg.user_id] === undefined) {
+        const userData = await getUserData(msg.user_id);
+
+        cacheUser(msg.user_id, userData);
+      }
     }
   }
 
@@ -116,11 +145,23 @@ export function Chats() {
   }, [page]);
 
   useEffect(() => {
+    if (lockScroll) {
+      scrollToBottom('auto');
+    }
+
     if (messagePanelRef && messagePanelRef.current) {
       const {scrollHeight} = messagePanelRef.current;
       setMessagePanelScrollHeight(scrollHeight);
     }
   }, [currentMessages]);
+
+  useEffect(() => {
+    const unsubscribe = addMessageListener(handleNewMessage);
+
+    return () => {
+      unsubscribe();
+    }
+  }, [handleNewMessage]);
 
   useEffect(() => {
     async function initChats() {
@@ -151,35 +192,12 @@ export function Chats() {
         setUser(user);
         setChannels(channels);
         setMessages(initMessages);
-        scrollToBottom();
+        scrollToBottom('smooth');
+
       }
     }
-
+    
     initChats();
-
-    addMessageListener(async ({events, payload: msg}: any) => {
-      const event = events[0].split('.')[events[0].split('.').length - 1];
-
-      if (event === 'create') {
-        setMessages((m: any) => ({
-          ...m,
-          [currentChannel.$id]: [
-            ...m[currentChannel.$id],
-            msg
-          ]
-        }));
-
-        if (userCache[msg.user_id] === undefined) {
-          const userData = await getUserData(msg.user_id);
-
-          cacheUser(msg.user_id, userData);
-        }
-
-        if (msg.user_id === user.auth_id) {
-          scrollToBottom();
-        }
-      }
-    });
   }, []);
 
   if (!user) {

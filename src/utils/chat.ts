@@ -38,7 +38,7 @@ export async function getLatestMessages(channelId: string, page: number = 0) {
   return false;
 }
 
-export async function addMessageListener(callback: Function) {
+export function addMessageListener(callback: Function) {
   try {
     const event = `databases.${config.databaseId}.collections.${config.messagesCollectionId}.documents`;
     return client.subscribe(event, callback);

@@ -16,5 +16,7 @@
 ☐ User @ tagging w/ notifications
 ✔ Auto-resize textarea for MessageBar @done(23-06-04 23:26)
 ✔ Nl2br for multiline messages @done(23-06-04 23:32)
-☐ Fix slow speed when changing channels (re-fetching data in loader)
-☐ If scrolled to bottom of messages, 'lock' UI so that it'll auto scroll to the bottom as new messages come in
+✔ Fix slow speed when changing channels (re-fetching data in loader) @done(23-06-05 01:58)
+✔ If scrolled to bottom of messages, 'lock' UI so that it'll auto scroll to the bottom as new messages come in @done(23-06-05 02:32)
+
+☐ Clean up code (component-ify things, etc.)
