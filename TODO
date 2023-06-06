@@ -1,34 +1,8 @@
-✔ Scroll up to load next page of messages @done(23-06-05 00:15)
-✔ Tap other user avatar -> profile slide up @done(23-06-05 10:26)
-☐ GPT-3.5 bot
-☐ Admin tools
-  ☐ Create / edit channels
-  ☐ Manage bots
-✔ PWA @done(23-06-03 12:28)
-☐ Desktop styling
-☐ Push notifications (fuck u iOS)
-  ☐ User menu link to notifications page, with option to enable push there
-  ☐ User @ tagging w/ notifications
-☐ Press enter to submit stuff
-☐ Heart messages
-✔ Edit profile @done(23-06-05 10:08)
-☐ Settings
-  ☐ Delete message text when deleting audio track? (bool)
-  
-☐ Markdown support
-✔ Auto-resize textarea for MessageBar @done(23-06-04 23:26)
-✔ Nl2br for multiline messages @done(23-06-04 23:32)
-✔ Fix slow speed when changing channels (re-fetching data in loader) @done(23-06-05 01:58)
-✔ If scrolled to bottom of messages, 'lock' UI so that it'll auto scroll to the bottom as new messages come in @done(23-06-05 02:32)
-☐ Display who is typing feature
-
-☐ Clean up code (component-ify things, etc.)
-
-☐ Minor-improvements-to-be-made log:
-  ☐ Focus MessageBar after / on record
-  ☐ Hold to record instead of tap
-  ☐ Maybe visualize waveform on messages with audio?
-
-☐ Nutso ideas
-  ☐ Add config for openai Whisper + Google IMA audio ads to enable mode where you can send voice clips that get transcribed into texts. Tapping the texts will play the original audio. Sometimes integrate an audio ads.
-  ☐ Compile server audio + transcripts into a daily or weekly highlights podcast that users can listen to via the app.
+Minimum Hackathon TODO:
+  ☐ Add audio files + waveform rendering & playback to sent messages
+  ☐ Admin panel and server management
+  ☐ Begin the npx create script using the server SDKs
+  ☐ Inbox and user @ tagging system (with push notifications in compatible browsers)
+    ☐ Create DM threads with other users which can be continued in private, and appear in your Inbox section by tagging them in a public channel
+  ☐ Settings (if applicable)
+  ☐ Clean up codebase (components, types, etc.)

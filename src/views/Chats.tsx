@@ -5,15 +5,11 @@ import config from '../../jabberbase.config.json';
 import { addMessageListener, getChannels, getLatestMessages } from '../utils/chat';
 import { getUserData } from '../utils/account';
 import { useEffect, useRef, useState } from 'react';
-import iconArrowWhite from '../assets/icons/msg-arrow-white.svg';
-import iconArrowBlack from '../assets/icons/msg-arrow-black.svg';
-import novatar from '../assets/novatar.jpg';
 import { MessageBar } from '../components/MessageBar';
 import { ID, db } from '../utils/appwrite';
-import { motion } from 'framer-motion';
-import nl2br from 'react-nl2br';
 import { UserProfile } from '../components/UserProfile';
 import { X } from 'react-feather';
+import { Message } from '../components/Message';
 // import { Loader2 } from '../components/Loader2';
 
 export function Chats() {
@@ -243,59 +239,20 @@ export function Chats() {
           </div>
         }
         {
-          currentMessages && currentMessages.map((msg: any) => {
+          currentMessages && currentMessages.map((msg: any, i: number) => {
             const msgUser = userCache[msg.user_id];
             const loadingUser = (msgUser === undefined);
+            const fromSelf = (msg.user_id === user.auth_id);
 
             return (
-              <div className={`w-full mb-4 flex flex-row items-start ${msg.user_id === user.auth_id ? 'justify-end' : 'justify-start'}`} key={`m_${msg.$id}`}>
-                {
-                  msg.user_id !== user.auth_id &&
-                  <motion.button
-                    className={`w-9 h-9 shrink-0 bg-cover bg-center rounded-md border-2 border-black ${loadingUser ? 'animate-pulse' : ''}`}
-                    style={{
-                      backgroundImage: (!loadingUser && msgUser.avatar) ? `url(${msgUser.avatar})` : `url(${novatar})`
-                    }}
-                    initial={{
-                      translateY: '50%',
-                      opacity: 0
-                    }}
-                    animate={{
-                      translateY: 0,
-                      opacity: 1
-                    }}
-                    onClick={() => !loadingUser && viewProfile(msg.user_id)}
-                  />
-                }
-
-                <motion.div
-                  className={`relative overflow-visible p-2 border-2 border-black rounded-md ${msg.user_id === user.auth_id ? 'bg-black text-white mr-5' : 'bg-white text-black ml-7'}`}
-                  initial={{
-                    opacity: 0,
-                    translateX: (msg.user_id === user.auth_id ? '50%' : '-50%')
-                  }}
-                  animate={{
-                    opacity: 1,
-                    translateX: 0
-                  }}
-                >
-                  {nl2br(msg.message)}
-
-                  {
-                    msg.user_id === user.auth_id
-                    ? <img
-                        src={iconArrowBlack}
-                        alt=""
-                        className={`absolute top-[10px] right-[2px] translate-x-full`}
-                      />
-                    : <img
-                        src={iconArrowWhite}
-                        alt=""
-                        className={`absolute top-[10px] left-[2px] -translate-x-full`}
-                      />
-                  }
-                </motion.div>
-              </div>
+              <Message
+                msg={msg}
+                msgUser={msgUser}
+                loadingUser={loadingUser}
+                fromSelf={fromSelf}
+                onViewProfile={viewProfile}
+                key={`m_${i}`}
+              />
             );
           })
         }
