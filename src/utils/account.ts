@@ -156,7 +156,6 @@ export async function updateUser(authId: string, username: string, bio: string |
         q.equal('auth_id', [authId])
       ]
     );
-    console.log(userData);
     const [user] = userData.documents;
     const {$id: userId} = user;
 

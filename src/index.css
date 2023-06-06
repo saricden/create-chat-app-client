@@ -2,9 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  user-select: none !important;
+}
+
 html,
 body {
   background-color: #FFF;
+  overflow: hidden;
 }
 
 .loader {
@@ -169,3 +174,43 @@ body {
       top: 38px;
     }
   }
+
+.loader2 {
+  width: 40px;
+  height: 8px;
+  display: block;
+  margin: auto;
+  position: relative;
+  border-radius: 4px;
+  color: #000;
+  background: #000;
+  box-sizing: border-box;
+  animation: animloader 0.6s 0.3s ease infinite alternate;
+}
+.loader2::after,
+.loader2::before {
+  content: '';  
+  box-sizing: border-box;
+  width: 40px;
+  height: 8px;
+  background: #000;
+  position: absolute;
+  border-radius: 4px;
+  top: 0;
+  right: 110%;
+  animation: animloader  0.6s ease infinite alternate;
+}
+.loader2::after {
+  left: 110%;
+  right: auto;
+  animation-delay: 0.6s;
+}
+
+@keyframes animloader {
+  0% {
+    width: 30px;
+  }
+  100% {
+    width: 80px;
+  }
+}

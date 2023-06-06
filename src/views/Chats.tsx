@@ -14,6 +14,7 @@ import { motion } from 'framer-motion';
 import nl2br from 'react-nl2br';
 import { UserProfile } from '../components/UserProfile';
 import { X } from 'react-feather';
+import { Loader2 } from '../components/Loader2';
 
 export function Chats() {
   const navigate = useNavigate();
@@ -42,7 +43,10 @@ export function Chats() {
     }));
   }
 
-  function sendMessage() {
+  async function sendMessage(audioFile: any) {
+
+    // await uploading the audio and getting the file ID
+    
     db.createDocument(
       config.databaseId,
       config.messagesCollectionId,
@@ -293,13 +297,14 @@ export function Chats() {
             );
           })
         }
+
+        {/* <Loader2 /> */}
       </div>
 
       <MessageBar
         msg={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={(val: string) => setMessage(val)}
         onSend={sendMessage}
-        onReact={sendReaction}
       />
 
       <div
