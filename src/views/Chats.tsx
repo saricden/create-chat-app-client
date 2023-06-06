@@ -14,7 +14,7 @@ import { motion } from 'framer-motion';
 import nl2br from 'react-nl2br';
 import { UserProfile } from '../components/UserProfile';
 import { X } from 'react-feather';
-import { Loader2 } from '../components/Loader2';
+// import { Loader2 } from '../components/Loader2';
 
 export function Chats() {
   const navigate = useNavigate();
@@ -45,6 +45,8 @@ export function Chats() {
 
   async function sendMessage(audioFile: any) {
 
+    console.log(audioFile);
+
     // await uploading the audio and getting the file ID
     
     db.createDocument(
@@ -63,9 +65,9 @@ export function Chats() {
     setLockScroll(true);
   }
 
-  function sendReaction() {
-    console.log('todo');
-  }
+  // function sendReaction() {
+  //   console.log('todo');
+  // }
 
   function scrollToBottom(behavior: 'auto' | 'smooth') {
     if (messagePanelRef && messagePanelRef.current) {

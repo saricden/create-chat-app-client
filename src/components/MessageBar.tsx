@@ -1,5 +1,5 @@
 import 'regenerator-runtime';
-import { ChangeEventHandler, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
@@ -21,10 +21,10 @@ export function MessageBar({ msg, onChange, onSend}: MessageBarProps) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [focused, setFocused] = useState(false);
   const [recording, setRecording] = useState(false);
-  const [audioFile, setAudioFile] = useState<any>(null);
+  // const [audioFile, setAudioFile] = useState<any>(null);
   const {
     transcript,
-    resetTranscript
+    // resetTranscript
   } = useSpeechRecognition();
 
   useEffect(() => {
@@ -33,6 +33,7 @@ export function MessageBar({ msg, onChange, onSend}: MessageBarProps) {
 
   function handleUp() {
     if (!recording) {
+      const audioFile = null;
       onSend(audioFile);
     }
     else {

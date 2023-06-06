@@ -8,18 +8,18 @@ interface UsersTypingProps {
 
 export function UsersTyping({ users }: UsersTypingProps) {
   const maxPicturesToDisplay = 5;
-  const maxNamesToDisplay = 3;
-  let message = '';
+  // const maxNamesToDisplay = 3;
+  // // let message = '';
 
-  if (users.length === 0) {
-    return null;
-  }
+  // // if (users.length === 0) {
+  // //   return null;
+  // // }
   
-  message = users[0].username;
+  // // message = users[0].username;
   
-  for (let i = 1; i < maxNamesToDisplay; i++) {
-    message += users[i].username;
-  }
+  // // for (let i = 1; i < maxNamesToDisplay; i++) {
+  // //   message += users[i].username;
+  // // }
   
   return (
     <div className={`w-full flex flex-col items-center justify-center`}>
