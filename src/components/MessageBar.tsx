@@ -83,6 +83,7 @@ export function MessageBar({ msg, onChange, onSend}: MessageBarProps) {
 
   function playAudioTrack() {
     if (audioObject) {
+      audioObject.currentTime = 0;
       audioObject.play();
     }
   }
@@ -125,7 +126,7 @@ export function MessageBar({ msg, onChange, onSend}: MessageBarProps) {
       className={`z-40 fixed bottom-0 left-0 w-full p-2 flex flex-row items-end bg-gradient-to-t from-white to-white/0`}
     >
       <div
-        className={`min-h-12 border-2 p-2 rounded-md flex flex-col flex-1 mr-2 outline-none resize-none transition-all ${record ? 'border-red-500 bg-red-500 animate-pulse' : 'border-black'} bg-white`}
+        className={`border-2 p-2 rounded-md flex flex-col flex-1 mr-2 outline-none resize-none transition-all ${record ? 'border-red-500 bg-red-500 animate-pulse' : 'border-black'} bg-white`}
       >
         <div className={`w-full flex flex-row items-center overflow-hidden bg-black rounded-md ${(waveform === null || record) ? 'h-0' : 'mb-2' }`}>
           <button
@@ -150,7 +151,7 @@ export function MessageBar({ msg, onChange, onSend}: MessageBarProps) {
           </button>
         </div>
         <TextareaAutosize
-          className={`w-full outline-none`}
+          className={`w-full min-h-12 outline-none`}
           value={msg}
           onChange={(e) => onChange(e.target.value)}
           maxRows={4}
