@@ -13,6 +13,8 @@
 ☐ Heart messages
 ✔ Edit profile @done(23-06-05 10:08)
 ☐ Settings
+  ☐ Delete message text when deleting audio track? (bool)
+  
 ☐ Markdown support
 ✔ Auto-resize textarea for MessageBar @done(23-06-04 23:26)
 ✔ Nl2br for multiline messages @done(23-06-04 23:32)
@@ -25,6 +27,7 @@
 ☐ Minor-improvements-to-be-made log:
   ☐ Focus MessageBar after / on record
   ☐ Hold to record instead of tap
+  ☐ Maybe visualize waveform on messages with audio?
 
 ☐ Nutso ideas
   ☐ Add config for openai Whisper + Google IMA audio ads to enable mode where you can send voice clips that get transcribed into texts. Tapping the texts will play the original audio. Sometimes integrate an audio ads.
