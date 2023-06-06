@@ -6,7 +6,7 @@ import { addMessageListener, getChannels, getLatestMessages } from '../utils/cha
 import { getUserData } from '../utils/account';
 import { useEffect, useRef, useState } from 'react';
 import { MessageBar } from '../components/MessageBar';
-import { ID, db } from '../utils/appwrite';
+import { ID, db, storage } from '../utils/appwrite';
 import { UserProfile } from '../components/UserProfile';
 import { X } from 'react-feather';
 import { Message } from '../components/Message';
@@ -40,30 +40,38 @@ export function Chats() {
   }
 
   async function sendMessage(audioFile: any) {
-
-    console.log(audioFile);
-
-    // await uploading the audio and getting the file ID
-    
-    db.createDocument(
-      config.databaseId,
-      config.messagesCollectionId,
-      ID.unique(),
-      {
+    try {
+      let messageData: any = {
         channel_id: currentChannel.$id,
         message,
         user_id: user.auth_id,
         posted_at: new Date()
+      };
+
+      setMessage('');
+      setLockScroll(true);
+
+      if (audioFile) {
+        const file = await storage.createFile(config.audioMessagesBucketId, ID.unique(), audioFile);
+        const {$id: audioId} = file;
+
+        messageData = {
+          ...messageData,
+          audioId
+        };
       }
-    );
-
-    setMessage('');
-    setLockScroll(true);
+      
+      db.createDocument(
+        config.databaseId,
+        config.messagesCollectionId,
+        ID.unique(),
+        messageData
+      );
+    }
+    catch (e) {
+      console.warn(e);
+    }
   }
-
-  // function sendReaction() {
-  //   console.log('todo');
-  // }
 
   function scrollToBottom(behavior: 'auto' | 'smooth') {
     if (messagePanelRef && messagePanelRef.current) {
@@ -80,13 +88,22 @@ export function Chats() {
 
     const nextPage = (page + 1);
     const {$id: channelId} = currentChannel;
-    const nextMessages = await getLatestMessages(channelId, nextPage);
+    let nextMessages = await getLatestMessages(channelId, nextPage);
 
-    nextMessages.forEach(async (msg: any) => {
+    nextMessages.forEach(async (msg: any, i: number) => {
       if (userCache[msg.user_id] === undefined) {
         const userData = await getUserData(msg.user_id);
 
         cacheUser(msg.user_id, userData);
+      }
+      
+      if (msg.audioId) {
+        try {
+          nextMessages[i].audioURL = await storage.getFileView(config.audioMessagesBucketId, msg.audioId);
+        }
+        catch (e) {
+          console.warn(e);
+        }
       }
     });
 
@@ -129,19 +146,30 @@ export function Chats() {
     const event = events[0].split('.')[events[0].split('.').length - 1];
 
     if (event === 'create') {
-      setMessages((m: any) => ({
-        ...m,
-        [currentChannel.$id]: [
-          ...m[currentChannel.$id],
-          msg
-        ]
-      }));
+      let newMessage = msg;
 
       if (userCache[msg.user_id] === undefined) {
         const userData = await getUserData(msg.user_id);
 
         cacheUser(msg.user_id, userData);
       }
+
+      if (msg.audioId) {
+        try {
+          newMessage.audioURL = await storage.getFileView(config.audioMessagesBucketId, msg.audioId);
+        }
+        catch (e) {
+          console.warn(e);
+        }
+      }
+
+      setMessages((m: any) => ({
+        ...m,
+        [currentChannel.$id]: [
+          ...m[currentChannel.$id],
+          newMessage
+        ]
+      }));
     }
   }
 
@@ -194,13 +222,24 @@ export function Chats() {
 
         initMessages[channelId] = channelMessages;
 
-        channelMessages.forEach(async (msg: any) => {
-          if (userCache[msg.user_id] === undefined) {
-            const userData = await getUserData(msg.user_id);
+        for (let i = 0; i < channelMessages.length; i++) {
+          const msg = initMessages[channelId][i];
 
-            cacheUser(msg.user_id, userData);
+          if (userCache[msg.user_id] === undefined) {
+            getUserData(msg.user_id).then((userData) => {
+              cacheUser(msg.user_id, userData);
+            });
           }
-        });
+
+          if (msg.audioId) {
+            try {
+              initMessages[channelId][i].audioURL = await storage.getFileDownload(config.audioMessagesBucketId, msg.audioId);
+            }
+            catch (e) {
+              console.warn(e);
+            }
+          }
+        }
 
         setUser(user);
         setChannels(channels);

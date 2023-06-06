@@ -1,8 +1,10 @@
 Minimum Hackathon TODO:
-  ☐ Add audio files + waveform rendering & playback to sent messages
+  ✔ Add audio files + waveform rendering & playback to sent messages @done(23-06-06 04:34)
   ☐ Admin panel and server management
   ☐ Begin the npx create script using the server SDKs
   ☐ Inbox and user @ tagging system (with push notifications in compatible browsers)
     ☐ Create DM threads with other users which can be continued in private, and appear in your Inbox section by tagging them in a public channel
+  ☐ Desktop styling
+  ☐ Interactive help tutorial which can be launched again from the user menu at any time
   ☐ Settings (if applicable)
   ☐ Clean up codebase (components, types, etc.)
