@@ -81,9 +81,10 @@ export function MessageBar({ msg, onChange, onSend}: MessageBarProps) {
       />
 
       <button
-        className={`w-[44px] h-[44px] text-white rounded-md flex items-center justify-center overflow-hidden ${recording ? 'bg-red-500 animate-pulse' : 'bg-black'}`}
+        className={`w-[44px] h-[44px] text-white rounded-md flex items-center justify-center overflow-hidden transition-all ${recording ? 'bg-red-500 animate-pulse scale-150' : 'bg-black'}`}
         onPointerDown={handleDown}
         onPointerUp={handleUp}
+        onPointerCancel={handleUp}
       >
         {
           doAudio
