@@ -28,7 +28,7 @@ export function MessageBar({ msg, onChange, onSend}: MessageBarProps) {
   } = useSpeechRecognition();
 
   useEffect(() => {
-    onChange(transcript);
+    onChange(ucFirst(transcript));
   }, [transcript]);
 
   function handleUp() {
@@ -61,11 +61,15 @@ export function MessageBar({ msg, onChange, onSend}: MessageBarProps) {
       }
     }, 100);
   }
+
+  function ucFirst(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
   
   return (
     <div className={`z-40 fixed h-20 bottom-0 left-0 w-full p-2 flex flex-row items-end bg-gradient-to-t from-white to-white/0`}>
       <TextareaAutosize
-        className={`min-h-12 border-2 p-2 rounded-md flex-1 mr-2 outline-none resize-none transition-all ${recording ? 'border-red-500 animate-pulse' : 'border-black'}`}
+        className={`min-h-12 border-2 p-2 rounded-md flex-1 mr-2 outline-none resize-none transition-all ${recording ? 'border-red-500 bg-red-500 animate-pulse' : 'border-black'}`}
         value={msg}
         onChange={(e) => onChange(e.target.value)}
         maxRows={4}
