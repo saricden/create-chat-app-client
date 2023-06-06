@@ -33,7 +33,7 @@ export function Message({ msg, msgUser, loadingUser, fromSelf, onViewProfile }: 
   
         WaveSurfer.create({
           container: waveformRef.current!,
-          waveColor: '#FFF',
+          waveColor: fromSelf ? '#FFF' : '#000',
           cursorColor: 'rgba(0, 0, 0, 0)',
           height: 24,
           barHeight: 3,
