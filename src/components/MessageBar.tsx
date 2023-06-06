@@ -24,7 +24,7 @@ export function MessageBar({ msg, onChange, onSend}: MessageBarProps) {
   // const [audioFile, setAudioFile] = useState<any>(null);
   const {
     transcript,
-    // resetTranscript
+    resetTranscript
   } = useSpeechRecognition();
 
   useEffect(() => {
@@ -45,6 +45,7 @@ export function MessageBar({ msg, onChange, onSend}: MessageBarProps) {
     }
 
     setRecording(false);
+    resetTranscript();
   }
 
   function handleDown() {
