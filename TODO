@@ -22,6 +22,10 @@
 
 ☐ Clean up code (component-ify things, etc.)
 
+☐ Minor-improvements-to-be-made log:
+  ☐ Focus MessageBar after / on record
+  ☐ Hold to record instead of tap
+
 ☐ Nutso ideas
   ☐ Add config for openai Whisper + Google IMA audio ads to enable mode where you can send voice clips that get transcribed into texts. Tapping the texts will play the original audio. Sometimes integrate an audio ads.
   ☐ Compile server audio + transcripts into a daily or weekly highlights podcast that users can listen to via the app.
