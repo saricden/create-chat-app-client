@@ -1,0 +1,12 @@
+{
+  "appwriteProjectId": "",
+  "profilePicturesBucketId": "",
+  "audioMessagesBucketId": "",
+  "databaseId": "",
+  "usersCollectionId": "",
+  "channelsCollectionId": "",
+  "messagesCollectionId": "",
+  "speechlyAppId": "",
+  "serverName": "",
+  "welcomeMessage": ""
+}
