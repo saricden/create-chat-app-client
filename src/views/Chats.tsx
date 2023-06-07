@@ -53,11 +53,11 @@ export function Chats() {
 
       if (audioFile) {
         const file = await storage.createFile(config.audioMessagesBucketId, ID.unique(), audioFile);
-        const {$id: audioId} = file;
+        const {$id: audio_id} = file;
 
         messageData = {
           ...messageData,
-          audioId
+          audio_id
         };
       }
       
@@ -97,9 +97,9 @@ export function Chats() {
         cacheUser(msg.user_id, userData);
       }
       
-      if (msg.audioId) {
+      if (msg.audio_id) {
         try {
-          nextMessages[i].audioURL = await storage.getFileView(config.audioMessagesBucketId, msg.audioId);
+          nextMessages[i].audioURL = await storage.getFileView(config.audioMessagesBucketId, msg.audio_id);
         }
         catch (e) {
           console.warn(e);
@@ -154,9 +154,9 @@ export function Chats() {
         cacheUser(msg.user_id, userData);
       }
 
-      if (msg.audioId) {
+      if (msg.audio_id) {
         try {
-          newMessage.audioURL = await storage.getFileView(config.audioMessagesBucketId, msg.audioId);
+          newMessage.audioURL = await storage.getFileView(config.audioMessagesBucketId, msg.audio_id);
         }
         catch (e) {
           console.warn(e);
@@ -231,9 +231,9 @@ export function Chats() {
             });
           }
 
-          if (msg.audioId) {
+          if (msg.audio_id) {
             try {
-              initMessages[channelId][i].audioURL = await storage.getFileDownload(config.audioMessagesBucketId, msg.audioId);
+              initMessages[channelId][i].audioURL = await storage.getFileDownload(config.audioMessagesBucketId, msg.audio_id);
             }
             catch (e) {
               console.warn(e);

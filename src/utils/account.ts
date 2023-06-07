@@ -100,7 +100,6 @@ export async function register(username: string, avatarFile: any) {
   try {
     const accountData = await account.get();
     const {$id: auth_id} = accountData;
-    const now = new Date();
     let avatar_id = '';
 
     if (avatarFile) {
@@ -115,8 +114,6 @@ export async function register(username: string, avatarFile: any) {
       {
         username,
         avatar_id,
-        last_active: now,
-        register_date: now,
         auth_id
       }
     );
