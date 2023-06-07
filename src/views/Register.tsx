@@ -1,6 +1,6 @@
 import nl2br from "react-nl2br";
 import { Navbar } from "../components/Navbar";
-import config from '../../jabberbase.config.json';
+import config from '../../chat.config.json';
 import { AvatarSelect } from "../components/AvatarSelect";
 import { redirect, useNavigate } from "react-router-dom";
 import { useState } from "react";

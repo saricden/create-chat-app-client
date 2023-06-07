@@ -1,6 +1,6 @@
 // @ts-ignore
 import { Client, Account, Storage, Databases, Query, ID } from 'appwrite';
-import config from '../../jabberbase.config.json';
+import config from '../../chat.config.json';
 
 const client = new Client();
 const account = new Account(client);

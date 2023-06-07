@@ -4,7 +4,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { Mic, Play, Send, Square, X } from "react-feather";
-import config from '../../jabberbase.config.json';
+import config from '../../chat.config.json';
 import { Loader } from './Loader';
 // @ts-ignore
 import { useAudioRecorder } from 'react-audio-voice-recorder';

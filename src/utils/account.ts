@@ -1,5 +1,5 @@
 import { account, storage, ID, db, q } from "./appwrite";
-import config from '../../jabberbase.config.json';
+import config from '../../chat.config.json';
 
 /** Gets useful data for the currently logged in user, or the user provided by Id
  * Returns null if something goes wrong, or:

@@ -1,5 +1,5 @@
 {
-  "name": "jabberbase",
+  "name": "create-chat-app-client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -21,6 +21,7 @@
     "react-feather": "^2.0.10",
     "react-nl2br": "^1.0.4",
     "react-router-dom": "^6.11.2",
+    "react-select": "^5.7.3",
     "react-speech-recognition": "^3.10.0",
     "react-textarea-autosize": "^8.4.1",
     "regenerator-runtime": "^0.13.11",

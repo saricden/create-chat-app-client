@@ -1,5 +1,5 @@
 import { client, db, q } from "./appwrite";
-import config from '../../jabberbase.config.json';
+import config from '../../chat.config.json';
 
 export async function getChannels() {
   try {

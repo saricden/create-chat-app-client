@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import config from '../../jabberbase.config.json';
+import config from '../../chat.config.json';
 import novatar from '../assets/novatar.jpg';
 import { ChannelBtn } from './ChannelBtn';
 import { useState } from 'react';
@@ -7,6 +7,7 @@ import { ArrowLeft, X } from 'react-feather';
 import { logout } from '../utils/account';
 import { MyProfile } from '../views/user/MyProfile';
 import { Notifications } from '../views/user/Notifications';
+import { Admin } from '../views/user/Admin';
 
 interface NavbarProps {
   locked?: boolean
@@ -141,6 +142,7 @@ export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
 
           <button
             className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-300 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+            onClick={() => openMenu('Admin')}
           >
             Admin
           </button>
@@ -170,6 +172,13 @@ export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
             <MyProfile
               user={user}
               onUpdate={onUserUpdate!}
+            />
+          }
+
+          {
+            menu === 'Admin' &&
+            <Admin
+
             />
           }
           

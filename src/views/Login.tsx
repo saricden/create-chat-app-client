@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import config from '../../jabberbase.config.json';
+import config from '../../chat.config.json';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
 import { account, ID } from '../utils/appwrite';

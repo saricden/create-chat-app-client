@@ -1,7 +1,7 @@
 import { redirect, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 import { Loader } from '../components/Loader';
-import config from '../../jabberbase.config.json';
+import config from '../../chat.config.json';
 import { addMessageListener, getChannels, getLatestMessages } from '../utils/chat';
 import { getUserData } from '../utils/account';
 import { useEffect, useRef, useState } from 'react';
