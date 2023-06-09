@@ -3,7 +3,7 @@ Minimum Hackathon TODO:
 
   ☐ Admin panel and server management
     ☐ Manage channels
-      ☐ Create channels
+      ✔ Create channels @done(23-06-08 22:51)
       ☐ Archive channels
       ☐ Edit channels
     ☐ Ban users
@@ -24,3 +24,8 @@ Minimum Hackathon TODO:
   ☐ Clean up codebase (components, types, etc.)
   
   ☐ Final touches on npx create script
+    ☐ Add admin team
+    ☐ Update write permissions for admin team
+    ☐ System to account for DB downtime periods
+      ☐ Email notification when DB ready?
+    ☐ Create first admin user via script

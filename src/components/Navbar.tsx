@@ -81,7 +81,7 @@ export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
         />
       </nav>
       
-      <nav className={`z-50 bg-black text-white fixed top-14 left-0 w-full h-14 px-2 flex items-center overflow-x-scroll`}>
+      <nav className={`z-50 bg-black text-white fixed top-14 left-0 w-full h-14 px-2 flex items-center overflow-y-hidden overflow-x-scroll`}>
         {
           channels.map((channel: any) => (
             <ChannelBtn
