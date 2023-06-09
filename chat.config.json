@@ -1,12 +1,13 @@
 {
-  "appwriteProjectId": "",
-  "profilePicturesBucketId": "",
-  "audioMessagesBucketId": "",
-  "databaseId": "",
-  "usersCollectionId": "",
-  "channelsCollectionId": "",
-  "messagesCollectionId": "",
-  "speechlyAppId": "",
-  "serverName": "",
-  "welcomeMessage": ""
+  "appwriteProjectId": "6480a9e5ce28a912cb4a",
+  "profilePicturesBucketId": "profile_pictures",
+  "audioMessagesBucketId": "audio_messages",
+  "databaseId": "chat",
+  "usersCollectionId": "users",
+  "profilesCollectionId": "profiles",
+  "channelsCollectionId": "channels",
+  "messagesCollectionId": "messages",
+  "speechlyAppId": "f25f9c1f-13e0-4199-8673-41913c6d6fe4",
+  "serverName": "chat.saricden",
+  "welcomeMessage": "Hi and welcome to my cool new chat server!"
 }

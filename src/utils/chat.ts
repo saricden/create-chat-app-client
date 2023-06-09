@@ -1,4 +1,4 @@
-import { client, db, q } from "./appwrite";
+import { client, db, q, storage } from "./appwrite";
 import config from '../../chat.config.json';
 import { RealtimeResponseEvent } from "appwrite";
 
@@ -55,4 +55,37 @@ export function addMessageListener(callback: (payload: RealtimeResponseEvent<unk
   }
 
   return false;
+}
+
+export async function findByUsername(username: string) {
+  try {
+    const profilesData = await db.listDocuments(
+      config.databaseId,
+      config.profilesCollectionId,
+      [
+        q.search('username', username)
+      ]
+    );
+    let profiles = profilesData.documents;
+
+    for (let i in profiles) {
+      const p = profiles[i];
+
+      if (p.avatar_id) {
+        const avatarURL = await storage.getFileView(
+          config.profilePicturesBucketId,
+          p.avatar_id
+        );
+
+        profiles[i].avatar = avatarURL.href;
+      }
+    }
+
+    return profiles;
+  }
+  catch (e) {
+    console.warn(e);
+  }
+
+  return [];
 }

@@ -8,6 +8,7 @@ import { logout } from '../utils/account';
 import { MyProfile } from '../views/user/MyProfile';
 import { Notifications } from '../views/user/Notifications';
 import { Admin } from '../views/user/Admin';
+import { Settings } from '../views/user/Settings';
 
 interface NavbarProps {
   locked?: boolean
@@ -143,6 +144,7 @@ export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: 
 
           <button
             className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-200 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+            onClick={() => openMenu('Settings')}
           >
             Settings
           </button>
@@ -182,6 +184,13 @@ export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: 
             <MyProfile
               user={user}
               onUpdate={onUserUpdate!}
+            />
+          }
+
+          {
+            menu === 'Settings' &&
+            <Settings
+
             />
           }
 

@@ -1,5 +1,5 @@
 import 'regenerator-runtime';
-import { useEffect, useRef, useState } from "react";
+import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
@@ -9,6 +9,8 @@ import { Loader } from './Loader';
 // @ts-ignore
 import { useAudioRecorder } from 'react-audio-voice-recorder';
 import WaveSurfer from 'wavesurfer.js';
+import { findByUsername } from '../utils/chat';
+import novatar from '../assets/novatar.jpg';
 
 const appId = config.speechlyAppId;
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(appId);
@@ -39,6 +41,22 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
   const {
     transcript,
   } = useSpeechRecognition();
+  const lastWord = msg.split(' ')[msg.split(' ').length - 1];
+  const doUserSearch = lastWord.startsWith('@');
+  const [userSearchResults, setUserSearchResults] = useState<any>([]);
+  const [userSearchKeyIndex, setUserSearchKeyIndex] = useState<null | number>(null);
+
+  useEffect(() => {
+    if (doUserSearch) {
+      findByUsername(lastWord.replace('@', '')).then((profiles) => {
+        setUserSearchResults(profiles);
+      });
+    }
+    else {
+      setUserSearchResults([]);
+      setUserSearchKeyIndex(null);
+    }
+  }, [lastWord]);
 
   useEffect(() => {
     onChange(ucFirst(transcript));
@@ -121,12 +139,82 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
   function ucFirst(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
+
+  function handleSearchSelect(e: any) {
+    if (doUserSearch) {
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+
+        if (userSearchKeyIndex == null) {
+          setUserSearchKeyIndex(userSearchResults.length - 1);
+        }
+        else {
+          if (userSearchKeyIndex + 1 >= userSearchResults.length - 1) {
+            setUserSearchKeyIndex(0);
+          }
+          else {
+            setUserSearchKeyIndex(userSearchKeyIndex + 1);
+          }
+        }
+      }
+      else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+
+        if (userSearchKeyIndex == null) {
+          setUserSearchKeyIndex(0);
+        }
+        else {
+          if (userSearchKeyIndex - 1 <= 0) {
+            setUserSearchKeyIndex(userSearchResults.length - 1);
+          }
+          else {
+            setUserSearchKeyIndex(userSearchKeyIndex - 1);
+          }
+        }
+      }
+      else if (e.key === 'Enter' && userSearchKeyIndex !== null) {
+        e.preventDefault();
+        
+        const profile = userSearchResults[userSearchKeyIndex];
+        const {username} = profile;
+
+        let allWordsButLast = msg.split(' ');
+        allWordsButLast.pop();
+
+        const newMessage = `${allWordsButLast.join(' ')} @${username} `;
+        onChange(newMessage);
+      }
+    }
+  }
   
   return (
     <div
-      className={`z-40 fixed bottom-0 left-0 w-full flex flex-row justify-center transition-all ${navOpen ? 'pr-[20rem]' : ''}`}
+      className={`z-40 fixed bottom-0 left-0 w-full flex flex-row justify-center overflow-visible transition-all ${navOpen ? 'pr-[20rem]' : ''}`}
     >
-      <div className={`w-full max-w-5xl p-2 flex flex-row items-end`}>
+      <div className={`relative w-full max-w-5xl p-2 flex flex-row items-end overflow-visible`}>
+        {
+          userSearchResults.length > 0 &&
+          <div className={`absolute top-0 left-0 w-full -translate-y-full flex flex-col bg-black text-white rounded-md overflow-hidden`}>
+            {
+              userSearchResults.map((user: any, i: number) => (
+                <button
+                  className={`flex flex-row p-2 text-lg items-center justify-start transition-all ${userSearchKeyIndex === i ? 'pl-4 bg-white/10' : ''}`}
+                  onClick={() => console.log(user.auth_id)}
+                  key={`us_${i}`}
+                >
+                  <div
+                    className={`w-9 h-9 mr-2 rounded-md border-2 border-white bg-cover bg-center`}
+                    style={{
+                      backgroundImage: `url(${user.avatar || novatar})`
+                    }}
+                  />
+                  <span>@{user.username}</span>
+                </button>
+              ))
+            }
+          </div>
+        }
+
         <div
           className={`border-2 p-2 rounded-md flex flex-col flex-1 mr-2 outline-none transition-all ${record ? 'border-red-500 bg-red-500 text-white animate-pulse' : 'border-black text-black bg-white'} `}
         >
@@ -134,6 +222,7 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
             className={`w-full min-h-12 outline-none resize-none bg-transparent`}
             value={msg}
             onChange={(e) => onChange(e.target.value)}
+            onKeyDown={handleSearchSelect}
             maxRows={4}
             ref={inputRef}
             disabled={record}
