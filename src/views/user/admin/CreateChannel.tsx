@@ -4,7 +4,7 @@ import Select, { StylesConfig, components } from 'react-select';
 import * as featherIcons from 'react-feather';
 
 interface CreateChannelProps {
-  onCancel: MouseEventHandler<HTMLButtonElement>
+  
 }
 
 const selectStyles: StylesConfig = {
@@ -65,7 +65,7 @@ function IconOption(props: any) {
   );
 }
 
-export function CreateChannel({ onCancel }: CreateChannelProps) {
+export function CreateChannel({ }: CreateChannelProps) {
   const [icon, setIcon] = useState({
     value: {
       name: 'Activity',
@@ -97,6 +97,13 @@ export function CreateChannel({ onCancel }: CreateChannelProps) {
           className={`mb-4`}
         />
 
+        <Input
+          type="text"
+          label="Slug"
+          color="#FFF"
+          className={`mb-4`}
+        />
+
         <label className={`w-full text-md font-semibold`}>Icon</label>
 
         <div className={`w-full flex flex-row items-center mb-8`}>
@@ -118,12 +125,6 @@ export function CreateChannel({ onCancel }: CreateChannelProps) {
           // onClick={saveProfile}
         >
           Create Channel
-        </button>
-
-        <button
-          onClick={onCancel}
-        >
-          or Cancel
         </button>
 
       </div>

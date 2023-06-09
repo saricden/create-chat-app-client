@@ -25,6 +25,7 @@ export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
   const [loggingOut, setLoggingOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [menu, setMenu] = useState<any>(null);
+  const [adminMenu, setAdminMenu] = useState('');
 
   async function confirmLogout() {
     setLoggingOut(true);
@@ -37,8 +38,13 @@ export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
     setMenuOpen(true);
   }
 
-  function closeMenu() {
-    setMenuOpen(false);
+  function goBack() {
+    if (adminMenu === '') {
+      setMenuOpen(false);
+    }
+    else {
+      setAdminMenu('');
+    }
   }
 
   if (locked) {
@@ -106,7 +112,7 @@ export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
 
           {
             menuOpen
-            ? <button onClick={closeMenu}>
+            ? <button onClick={goBack}>
                 <ArrowLeft size={28} />
               </button>
             : <button onClick={() => setOpen(false)}>
@@ -178,7 +184,8 @@ export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
           {
             menu === 'Admin' &&
             <Admin
-
+              menu={adminMenu}
+              setMenu={setAdminMenu}
             />
           }
           

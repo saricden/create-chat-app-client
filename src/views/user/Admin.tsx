@@ -2,15 +2,14 @@ import { useState } from 'react';
 import { CreateChannel } from './admin/CreateChannel';
 
 interface AdminProps {
-
+  menu: string
+  setMenu: Function
 }
 
-export function Admin({}: AdminProps) {
-  const [view, setView] = useState('root');
+export function Admin({ menu, setMenu }: AdminProps) {
   
-
-  if (view === 'create-channel') {
-    return <CreateChannel onCancel={() => setView('root')} />;
+  if (menu === 'create-channel') {
+    return <CreateChannel />;
   }
 
   return (
@@ -19,7 +18,7 @@ export function Admin({}: AdminProps) {
 
       <button
         className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center`}
-        onClick={() => setView('create-channel')}
+        onClick={() => setMenu('create-channel')}
       >
         Create Channel
       </button>

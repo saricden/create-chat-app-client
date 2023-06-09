@@ -10,7 +10,7 @@ Minimum Hackathon TODO:
     ☐ Timeout users
     ☐ Unsend messages
 
-  ☐ Begin the npx create script using the server SDKs
+  ✔ Begin the npx create script using the server SDKs @done(23-06-08 20:53)
 
   ☐ Inbox and user @ tagging system (with push notifications in compatible browsers)
     ☐ Create DM threads with other users which can be continued in private, and appear in your Inbox section by tagging them in a public channel
