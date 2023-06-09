@@ -125,8 +125,9 @@ export function RestoreChannel() {
         />
 
         <button
-          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-green-500 text-green-500 text-center`}
+          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-green-500 text-green-500 text-center transition-all ${selectedChannel === null ? 'opacity-50' : ''}`}
           onClick={saveChannel}
+          disabled={selectedChannel === null}
         >
           Restore Channel
         </button>

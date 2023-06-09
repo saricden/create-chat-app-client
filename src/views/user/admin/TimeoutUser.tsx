@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import Select, { StylesConfig } from 'react-select';
 import { Loader } from '../../../components/Loader';
-import { archiveChannel } from '../../../utils/admin';
-import { getChannels } from '../../../utils/chat';
+import { archiveChannel, getAllUsers } from '../../../utils/admin';
+import { getUserData } from '../../../utils/account';
 
 const selectStyles: StylesConfig = {
   container: (styles) => ({
@@ -51,25 +51,28 @@ const selectStyles: StylesConfig = {
   })
 };
 
-export function ArchiveChannel() {
+export function TimeoutUser() {
   const [loading, setLoading] = useState(true);
   const [done, setDone] = useState(false);
-  const [channels, setChannels] = useState<any>([]);
+  const [users, setUsers] = useState<any>([]);
   const [selectedChannel, setSelectedChannel] = useState<any>(null);
-  const channelOptions: any = channels.map((c: any) => ({
+  const channelOptions: any = users.map((c: any) => ({
     value: c.$id,
     label: c.title
   }));
 
   useEffect(() => {
-    async function loadChannels() {
-      const channels = await getChannels();
+    async function loadUsers() {
+      const currentUser = await getUserData();
+      const users = await getAllUsers();
+      const {$id: currentUserId} = currentUser!;
+      const otherUsers = users?.map((u) => u.$id !== currentUserId);
 
-      setChannels(channels);
+      setUsers(otherUsers);
       setLoading(false);
     }
 
-    loadChannels();
+    loadUsers();
   }, []);
 
   async function saveChannel() {
@@ -116,7 +119,7 @@ export function ArchiveChannel() {
 
         <Select
           options={channelOptions}
-          placeholder="Select channel..."
+          placeholder="Select user..."
           styles={selectStyles}
           value={selectedChannel}
           onChange={(c: any) => setSelectedChannel(c)}
@@ -125,9 +128,8 @@ export function ArchiveChannel() {
         />
 
         <button
-          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-red-500 text-red-500 text-center transition-all ${selectedChannel === null ? 'opacity-50' : ''}`}
+          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-red-500 text-red-500 text-center`}
           onClick={saveChannel}
-          disabled={selectedChannel === null}
         >
           Archive Channel
         </button>

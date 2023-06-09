@@ -69,3 +69,18 @@ export async function restorehannel(id: string) {
     console.warn(e);
   }
 }
+
+export async function getAllUsers() {
+  try {
+    const usersData = await db.listDocuments(
+      config.databaseId,
+      config.usersCollectionId
+    );
+    const {documents: users} = usersData;
+
+    return users;
+  }
+  catch (e) {
+    console.warn(e);
+  }
+}

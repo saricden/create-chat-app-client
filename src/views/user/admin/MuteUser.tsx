@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import Select, { StylesConfig } from 'react-select';
 import { Loader } from '../../../components/Loader';
-import { archiveChannel } from '../../../utils/admin';
-import { getChannels } from '../../../utils/chat';
+import { archiveChannel, getAllUsers } from '../../../utils/admin';
+import { getUserData } from '../../../utils/account';
 
 const selectStyles: StylesConfig = {
   container: (styles) => ({
@@ -51,33 +51,75 @@ const selectStyles: StylesConfig = {
   })
 };
 
-export function ArchiveChannel() {
+export function MuteUser() {
   const [loading, setLoading] = useState(true);
   const [done, setDone] = useState(false);
-  const [channels, setChannels] = useState<any>([]);
-  const [selectedChannel, setSelectedChannel] = useState<any>(null);
-  const channelOptions: any = channels.map((c: any) => ({
-    value: c.$id,
-    label: c.title
+  const [users, setUsers] = useState<any>([]);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+  const userOptions: any = users.map((c: any) => ({
+    value: c.auth_id,
+    label: c.username
   }));
+  const muteOptions = [
+    {
+      value: 1000 * 60 * 30,
+      label: '30 minutes'
+    },
+    {
+      value: 1000 * 60 * 60,
+      label: '1 hour'
+    },
+    {
+      value: 1000 * 60 * 60 * 4,
+      label: '4 hours'
+    },
+    {
+      value: 1000 * 60 * 60 * 8,
+      label: '8 hours'
+    },
+    {
+      value: 1000 * 60 * 60 * 24,
+      label: '1 day'
+    },
+    {
+      value: 1000 * 60 * 60 * 24 * 3,
+      label: '3 days'
+    },
+    {
+      value: 1000 * 60 * 60 * 24 * 7,
+      label: '1 week'
+    },
+    {
+      value: 1000 * 60 * 60 * 24 * 14,
+      label: '2 weeks'
+    },
+    {
+      value: 1000 * 60 * 60 * 24 * 30,
+      label: '1 month'
+    }
+  ];
+  const [selectedMutePeriod, setSelectedMutePeriod] = useState<any>(null);
 
   useEffect(() => {
-    async function loadChannels() {
-      const channels = await getChannels();
+    async function loadUsers() {
+      const currentUser = await getUserData();
+      const users = await getAllUsers();
+      const {$id: currentUserId} = currentUser!;
+      const otherUsers = users?.filter((u) => u.$id !== currentUserId);
 
-      setChannels(channels);
+      setUsers(otherUsers);
       setLoading(false);
     }
 
-    loadChannels();
+    loadUsers();
   }, []);
 
   async function saveChannel() {
     setLoading(true);
 
-    await archiveChannel(
-      selectedChannel.value,
-    );
+    // await archiveChannel(
+    //   selectedChannel.value,
+    // );
     
     setDone(true);
     setLoading(false);
@@ -110,26 +152,43 @@ export function ArchiveChannel() {
     );
   }
 
+  console.log(users);
+
   return (
     <div className={`flex flex-col h-full items-center`}>
-        <header className={`text-xl mb-5`}>Archive Channel</header>
+        <header className={`text-xl mb-2`}>Mute User</header>
+
+        <p className={`mb-5`}>
+          Muting a user will temporarily disable sending messages for them.
+        </p>
 
         <Select
-          options={channelOptions}
-          placeholder="Select channel..."
+          options={userOptions}
+          placeholder="Select user..."
           styles={selectStyles}
-          value={selectedChannel}
-          onChange={(c: any) => setSelectedChannel(c)}
+          value={selectedUser}
+          onChange={(u: any) => setSelectedUser(u)}
           isSearchable
           className={`mb-4`}
         />
 
+        <Select
+          options={muteOptions}
+          placeholder="Mute for..."
+          styles={selectStyles}
+          value={selectedMutePeriod}
+          onChange={(mp: any) => setSelectedMutePeriod(mp)}
+          isSearchable
+          className={`mb-4 transition-all ${selectedUser === null ? 'opacity-50' : ''}`}
+          isDisabled={selectedUser === null}
+        />
+
         <button
-          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-red-500 text-red-500 text-center transition-all ${selectedChannel === null ? 'opacity-50' : ''}`}
+          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-red-500 text-red-500 text-center transition-all ${selectedUser === null ? 'opacity-50' : ''}`}
           onClick={saveChannel}
-          disabled={selectedChannel === null}
+          disabled={selectedUser === null}
         >
-          Archive Channel
+          Mute User
         </button>
 
       </div>

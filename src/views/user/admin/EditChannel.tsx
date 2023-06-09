@@ -69,7 +69,6 @@ export function EditChannel() {
   const slug = title.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`'"~()]/g, '').replace(/\s/g, '-');
   const [loading, setLoading] = useState(true);
   const [done, setDone] = useState(false);
-  const [error, setError] = useState(false);
   const [channels, setChannels] = useState<any>([]);
   const [selectedChannel, setSelectedChannel] = useState<any>(null);
   const [icon, setIcon] = useState<any>(null);
@@ -116,11 +115,6 @@ export function EditChannel() {
   }, [selectedChannel]);
 
   async function saveChannel() {
-    if (title.trim().length === 0) {
-      setError(true);
-      return;
-    }
-
     setLoading(true);
 
     await updateChannel(
@@ -177,14 +171,10 @@ export function EditChannel() {
           type="text"
           label="Name"
           value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-            setError(false);
-          }}
+          onChange={(e) => setTitle(e.target.value)}
           color="#FFF"
           className={`mb-4`}
           disabled={selectedChannel === null}
-          error={error}
         />
 
         <Input
@@ -218,8 +208,9 @@ export function EditChannel() {
         </div>
 
         <button
-          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-green-500 text-green-500 text-center`}
+          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-green-500 text-green-500 text-center transition-all ${(selectedChannel === null || title.trim().length === 0) ? 'opacity-50' : ''}`}
           onClick={saveChannel}
+          disabled={(selectedChannel === null || title.trim().length === 0)}
         >
           Save Channel
         </button>
