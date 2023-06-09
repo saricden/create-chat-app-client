@@ -40,7 +40,7 @@ export function Chats() {
     }));
   }
 
-  async function sendMessage(audioFile: any) {
+  async function sendMessage(audioFile: any, taggedUserIds: string[]) {
     try {
       let messageData: any = {
         channel_id: currentChannel.$id,
@@ -59,6 +59,13 @@ export function Chats() {
         messageData = {
           ...messageData,
           audio_id
+        };
+      }
+
+      if (taggedUserIds.length > 0) {
+        messageData = {
+          ...messageData,
+          tagged_user_ids: taggedUserIds
         };
       }
       

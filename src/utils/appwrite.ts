@@ -1,9 +1,10 @@
-import { Client, Account, Storage, Databases, Query, ID } from 'appwrite';
+import { Client, Account, Storage, Databases, Query, ID, Functions } from 'appwrite';
 import config from '../../chat.config.json';
 
 const client = new Client();
 const account = new Account(client);
 const storage = new Storage(client);
+const functions = new Functions(client);
 const db = new Databases(client);
 const q = Query;
 
@@ -15,6 +16,7 @@ export {
   client,
   account,
   storage,
+  functions,
   db,
   q,
   ID

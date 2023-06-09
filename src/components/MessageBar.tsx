@@ -45,6 +45,7 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
   const doUserSearch = lastWord.startsWith('@');
   const [userSearchResults, setUserSearchResults] = useState<any>([]);
   const [userSearchKeyIndex, setUserSearchKeyIndex] = useState<null | number>(null);
+  const [taggedUsers, setTaggedUsers] = useState<any>([]);
 
   useEffect(() => {
     if (doUserSearch) {
@@ -128,8 +129,20 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
         setRecord(true);
       }
       else {
-        onSend(audioFile);
+        const finalTaggedUserIds: string[] = [];
+
+        taggedUsers.forEach((maybeTaggedUser: any) => {
+          const {username, auth_id} = maybeTaggedUser;
+
+          if (msg.match(`@${username}`)) {
+            finalTaggedUserIds.push(auth_id);
+          }
+        });
+
+
+        onSend(audioFile, finalTaggedUserIds);
         deleteAudioTrack();
+        setTaggedUsers([]);
       }
     }
 
@@ -182,12 +195,19 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
 
   function tagUser(i: number) {
     const profile = userSearchResults[i];
-    const {username} = profile;
+    const {username, auth_id} = profile;
 
     let allWordsButLast = msg.split(' ');
     allWordsButLast.pop();
     const newMessage = `${allWordsButLast.join(' ')} @${username} `;
 
+    setTaggedUsers([
+      ...taggedUsers,
+      {
+        username,
+        auth_id
+      }
+    ]);
     onChange(newMessage);
     inputRef.current?.focus();
   }

@@ -1,4 +1,4 @@
-import { account, storage, ID, db, q } from "./appwrite";
+import { account, storage, ID, db, q, functions } from "./appwrite";
 import config from '../../chat.config.json';
 
 /** Gets useful data for the currently logged in user, or the user provided by Id
@@ -197,6 +197,56 @@ export async function updateUser(authId: string, username: string, bio: string |
     );
 
     return true;
+  }
+  catch (e) {
+    console.warn(e);
+  }
+
+  return false;
+}
+
+export async function getVapidPublicKey() {
+  try {
+    const results = await functions.createExecution('getVapidPublicKey');
+    const json = JSON.parse(results.response);
+    const {vapidPublicKey} = json;
+
+    return vapidPublicKey;
+  }
+  catch (e) {
+    console.warn(e);
+  }
+
+  return null;
+}
+
+export async function setUserPushSubscription(push_subscription: string) {
+  try {
+    const accountData = await account.get();
+    const {$id: auth_id} = accountData;
+    const userData = await db.listDocuments(
+      config.databaseId,
+      config.usersCollectionId,
+      [
+        q.equal('auth_id', [auth_id])
+      ]
+    );
+    const [user] = userData.documents;
+
+    if (user) {
+      const {$id: userId} = user;
+
+      await db.updateDocument(
+        config.databaseId,
+        config.usersCollectionId,
+        userId,
+        {
+          push_subscription
+        }
+      );
+
+      return true;
+    }
   }
   catch (e) {
     console.warn(e);
