@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Client, Account, Storage, Databases, Query, ID } from 'appwrite';
 import config from '../../chat.config.json';
 

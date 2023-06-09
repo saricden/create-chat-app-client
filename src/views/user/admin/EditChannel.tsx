@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '../../../components/Input';
 import Select, { StylesConfig, components } from 'react-select';
 import * as featherIcons from 'react-feather';
 import { Loader } from '../../../components/Loader';
-import { createChannel } from '../../../utils/admin';
+import { createChannel, updateChannel } from '../../../utils/admin';
+import { getChannels } from '../../../utils/chat';
 
 const selectStyles: StylesConfig = {
   container: (styles) => ({
@@ -63,19 +64,15 @@ function IconOption(props: any) {
   );
 }
 
-export function CreateChannel() {
+export function EditChannel() {
   const [title, setTitle] = useState('');
   const slug = title.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`'"~()]/g, '').replace(/\s/g, '-');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [done, setDone] = useState(false);
   const [error, setError] = useState(false);
-  const [icon, setIcon] = useState({
-    value: {
-      name: 'Activity',
-      icon: <featherIcons.Activity style={{ marginRight: 8 }} />
-    },
-    label: 'Activity'
-  });
+  const [channels, setChannels] = useState<any>([]);
+  const [selectedChannel, setSelectedChannel] = useState<any>(null);
+  const [icon, setIcon] = useState<any>(null);
   const icons = Object.keys(featherIcons).map((iconName) => {
     // @ts-ignore
     const Icon = featherIcons[iconName];
@@ -88,8 +85,37 @@ export function CreateChannel() {
       label: iconName
     })
   });
+  const channelOptions: any = channels.map((c: any) => ({
+    value: c.$id,
+    label: c.title
+  }));
 
-  async function saveNewChannel() {
+  useEffect(() => {
+    async function loadChannels() {
+      const channels = await getChannels();
+
+      setChannels(channels);
+      setLoading(false);
+    }
+
+    loadChannels();
+  }, []);
+
+  useEffect(() => {
+    if (selectedChannel) {
+      const {value: id} = selectedChannel;
+      const channel = channels.find((c: any) => c.$id === id);
+
+      if (channel) {
+        const icon = icons.find((i: any) => i.value.name === channel.icon);
+        
+        setTitle(channel.title);
+        setIcon(icon);
+      }
+    }
+  }, [selectedChannel]);
+
+  async function saveChannel() {
     if (title.trim().length === 0) {
       setError(true);
       return;
@@ -97,7 +123,8 @@ export function CreateChannel() {
 
     setLoading(true);
 
-    await createChannel(
+    await updateChannel(
+      selectedChannel.value,
       title,
       slug,
       icon.value.name
@@ -111,7 +138,7 @@ export function CreateChannel() {
     return (
       <div className={`flex flex-col h-full items-center justify-center`}>
         <p className={`text-lg mb-5`}>
-          An app restart is required before the new channel {title} will be visible. Would you like to restart now?
+          An app restart is required before edits to channel {title} will be visible. Would you like to restart now?
         </p>
 
         <button
@@ -134,7 +161,17 @@ export function CreateChannel() {
 
   return (
     <div className={`flex flex-col h-full items-center`}>
-        <header className={`text-xl mb-5`}>Create Channel</header>
+        <header className={`text-xl mb-5`}>Edit Channel</header>
+
+        <Select
+          options={channelOptions}
+          placeholder="Select channel..."
+          styles={selectStyles}
+          value={selectedChannel}
+          onChange={(c: any) => setSelectedChannel(c)}
+          isSearchable
+          className={`mb-4`}
+        />
 
         <Input
           type="text"
@@ -146,6 +183,7 @@ export function CreateChannel() {
           }}
           color="#FFF"
           className={`mb-4`}
+          disabled={selectedChannel === null}
           error={error}
         />
 
@@ -158,10 +196,14 @@ export function CreateChannel() {
           className={`mb-4`}
         />
 
-        <label className={`w-full text-md font-semibold`}>Icon</label>
+        <label className={`w-full text-md font-semibold transition-all ${selectedChannel === null ? 'opacity-50' : ''}`}>Icon</label>
 
-        <div className={`w-full flex flex-row items-center mb-8`}>
-          {icon.value.icon}
+        <div className={`w-full flex flex-row items-center mb-8 transition-all ${selectedChannel === null ? 'opacity-50' : ''}`}>
+          {
+            icon === null
+            ? <div className={`w-[40px]`} />
+            : icon.value.icon
+          }
           <Select
             options={icons}
             styles={selectStyles}
@@ -171,14 +213,15 @@ export function CreateChannel() {
               Option: IconOption
             }}
             isSearchable
+            isDisabled={selectedChannel === null}
           />
         </div>
 
         <button
           className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-green-500 text-green-500 text-center`}
-          onClick={saveNewChannel}
+          onClick={saveChannel}
         >
-          Create Channel
+          Save Channel
         </button>
 
       </div>

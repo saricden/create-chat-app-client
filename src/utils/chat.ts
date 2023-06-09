@@ -1,9 +1,16 @@
 import { client, db, q } from "./appwrite";
 import config from '../../chat.config.json';
+import { RealtimeResponseEvent } from "appwrite";
 
-export async function getChannels() {
+export async function getChannels(archived = false) {
   try {
-    const channelData = await db.listDocuments(config.databaseId, config.channelsCollectionId);
+    const channelData = await db.listDocuments(
+      config.databaseId,
+      config.channelsCollectionId,
+      [
+        q.equal('archived', [archived])
+      ]
+    );
     const {documents: channels} = channelData;
 
     return channels;
@@ -38,7 +45,7 @@ export async function getLatestMessages(channelId: string, page: number = 0) {
   return false;
 }
 
-export function addMessageListener(callback: Function) {
+export function addMessageListener(callback: (payload: RealtimeResponseEvent<unknown>) => void) {
   try {
     const event = `databases.${config.databaseId}.collections.${config.messagesCollectionId}.documents`;
     return client.subscribe(event, callback);
