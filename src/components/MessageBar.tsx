@@ -1,5 +1,5 @@
 import 'regenerator-runtime';
-import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
@@ -174,7 +174,7 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
       }
       else if (e.key === 'Enter' && userSearchKeyIndex !== null) {
         e.preventDefault();
-        
+
         const profile = userSearchResults[userSearchKeyIndex];
         const {username} = profile;
 

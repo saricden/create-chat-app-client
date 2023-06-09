@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 
 interface SettingsProps {
 
@@ -6,7 +6,7 @@ interface SettingsProps {
 
 export function Settings({}: SettingsProps) {
   const pushSupported = ('PushManager' in window);
-  const [pushGranted, setPushGranted] = useState(false);
+  // const [pushGranted, setPushGranted] = useState(false);
 
   async function enablePush() {
     const permission = await Notification.requestPermission();

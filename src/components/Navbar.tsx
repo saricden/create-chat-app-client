@@ -15,8 +15,8 @@ interface NavbarProps {
   channels?: any
   user?: any
   onUserUpdate?: Function
-  open: boolean
-  setOpen: Function
+  open?: boolean
+  setOpen?: Function
 }
 
 export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: NavbarProps) {
@@ -79,7 +79,7 @@ export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: 
           style={{
             backgroundImage: user.avatar ? `url(${user.avatar})` : `url(${novatar})`
           }}
-          onClick={() => setOpen(true)}
+          onClick={() => setOpen && setOpen(true)}
         />
       </nav>
       
@@ -117,7 +117,7 @@ export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: 
             ? <button onClick={goBack}>
                 <ArrowLeft size={28} />
               </button>
-            : <button onClick={() => setOpen(false)}>
+            : <button onClick={() => setOpen && setOpen(false)}>
                 <X size={28} />
               </button>
           }
