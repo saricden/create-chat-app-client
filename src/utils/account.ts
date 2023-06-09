@@ -29,14 +29,31 @@ export async function getUserData(userId: string | null = null) {
     );
   
     if (userData.documents.length > 0) {
-      const [user] = userData.documents;
-      const avatarURL = await storage.getFileView(config.profilePicturesBucketId, user.avatar_id);
-      const { href: avatar } = avatarURL;
+      const profileData = await db.listDocuments(
+        config.databaseId,
+        config.profilesCollectionId,
+        [
+          // @ts-ignore
+          q.equal('auth_id', [auth_id])
+        ]
+      );
 
-      return {
-        ...user,
-        avatar
-      };
+      if (profileData.documents.length > 0) {
+        const [profile] = profileData.documents;
+        const [user] = userData.documents;
+        let avatar = null;
+
+        if (profile.avatar_id) {
+          const avatarURL = await storage.getFileView(config.profilePicturesBucketId, profile.avatar_id);
+          avatar = avatarURL.href;
+        }
+  
+        return {
+          ...user,
+          ...profile,
+          avatar
+        };
+      }
     }
   }
   catch (e) {
@@ -69,15 +86,15 @@ export async function userHasProfile() {
   try {
     const accountData = await account.get();
     const {$id: auth_id} = accountData;
-    const userData = await db.listDocuments(
+    const profileData = await db.listDocuments(
       config.databaseId,
-      config.usersCollectionId,
+      config.profilesCollectionId,
       [
         q.equal('auth_id', [auth_id])
       ]
     );
   
-    if (userData.documents.length > 0) {
+    if (profileData.documents.length > 0) {
       return true;
     }
   }
@@ -101,23 +118,37 @@ export async function register(username: string, avatarFile: any) {
   try {
     const accountData = await account.get();
     const {$id: auth_id} = accountData;
-    let avatar_id = '';
+    let avatar_id = null;
 
     if (avatarFile) {
       const file = await storage.createFile(config.profilePicturesBucketId, ID.unique(), avatarFile);
       avatar_id = file.$id;
     }
 
-    await db.createDocument(
+    const promiseUser = db.createDocument(
       config.databaseId,
       config.usersCollectionId,
       ID.unique(),
       {
-        username,
-        avatar_id,
         auth_id
       }
     );
+
+    const promiseProfile = db.createDocument(
+      config.databaseId,
+      config.profilesCollectionId,
+      ID.unique(),
+      {
+        auth_id,
+        username,
+        avatar_id
+      }
+    );
+
+    await Promise.all([
+      promiseUser,
+      promiseProfile
+    ]);
   }
   catch (e) {
     console.warn(e);
@@ -148,20 +179,20 @@ export async function updateUser(authId: string, username: string, bio: string |
       };
     }
 
-    const userData = await db.listDocuments(
+    const profileData = await db.listDocuments(
       config.databaseId,
-      config.usersCollectionId,
+      config.profilesCollectionId,
       [
         q.equal('auth_id', [authId])
       ]
     );
-    const [user] = userData.documents;
-    const {$id: userId} = user;
+    const [profile] = profileData.documents;
+    const {$id: profileId} = profile;
 
     await db.updateDocument(
       config.databaseId,
-      config.usersCollectionId,
-      userId,
+      config.profilesCollectionId,
+      profileId,
       patch
     );
 

@@ -146,12 +146,15 @@ export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
             Settings
           </button>
 
-          <button
-            className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-300 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
-            onClick={() => openMenu('Admin')}
-          >
-            Admin
-          </button>
+          {
+            user.show_admin_ui &&
+            <button
+              className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-300 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+              onClick={() => openMenu('Admin')}
+            >
+              Admin
+            </button>
+          }
 
           <button
             className={`w-full mt-auto px-4 py-2 border-2 border-red-500 rounded-md text-red-500 text-center`}

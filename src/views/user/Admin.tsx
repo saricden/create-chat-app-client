@@ -24,7 +24,7 @@ export function Admin({ menu, setMenu }: AdminProps) {
     return <RestoreChannel />;
   }
   else if (menu === 'mute-user') {
-    return <MuteUser />
+    return <MuteUser onSubmit={() => setMenu('')} />
   }
 
   return (

@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 import Select, { StylesConfig } from 'react-select';
 import { Loader } from '../../../components/Loader';
-import { getAllUsers } from '../../../utils/admin';
+import { getAllUsers, muteUser } from '../../../utils/admin';
 import { getUserData } from '../../../utils/account';
+
+interface MuteUserProps {
+  onSubmit: Function
+}
 
 const selectStyles: StylesConfig = {
   container: (styles) => ({
@@ -51,14 +55,13 @@ const selectStyles: StylesConfig = {
   })
 };
 
-export function MuteUser() {
+export function MuteUser({ onSubmit }: MuteUserProps) {
   const [loading, setLoading] = useState(true);
-  const [done, setDone] = useState(false);
   const [users, setUsers] = useState<any>([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const userOptions: any = users.map((c: any) => ({
     value: c.auth_id,
-    label: c.username
+    label: `${c.username} (${c.auth_id})`
   }));
   const muteOptions = [
     {
@@ -114,34 +117,15 @@ export function MuteUser() {
     loadUsers();
   }, []);
 
-  async function muteUser() {
+  async function doMuteUser() {
     setLoading(true);
 
-    // await archiveChannel(
-    //   selectedChannel.value,
-    // );
-    
-    setDone(true);
-    setLoading(false);
-  }
-
-  if (done) {
-    return (
-      <div className={`flex flex-col h-full items-center justify-center`}>
-        <p className={`text-lg mb-5`}>
-          An app restart is required before this channel will appear as archived.
-          <br /><br />
-          Would you like to restart now?
-        </p>
-
-        <button
-          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center`}
-          onClick={() => window.location.reload()}
-        >
-          Restart App
-        </button>
-      </div>
+    await muteUser(
+      selectedUser.value,
+      selectedMutePeriod.value
     );
+    
+    onSubmit();
   }
 
   if (loading) {
@@ -151,8 +135,6 @@ export function MuteUser() {
       </div>
     );
   }
-
-  console.log(users);
 
   return (
     <div className={`flex flex-col h-full items-center`}>
@@ -184,9 +166,9 @@ export function MuteUser() {
         />
 
         <button
-          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-red-500 text-red-500 text-center transition-all ${selectedUser === null ? 'opacity-50' : ''}`}
-          onClick={muteUser}
-          disabled={selectedUser === null}
+          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-red-500 text-red-500 text-center transition-all ${(selectedUser === null || selectedMutePeriod === null) ? 'opacity-50' : ''}`}
+          onClick={doMuteUser}
+          disabled={(selectedUser === null || selectedMutePeriod === null)}
         >
           Mute User
         </button>
