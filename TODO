@@ -12,10 +12,9 @@ Minimum Hackathon TODO:
 
   ✔ Begin the npx create script using the server SDKs @done(23-06-08 20:53)
 
-  ☐ Inbox and user @ tagging system (with push notifications in compatible browsers)
-    ☐ Create DM threads with other users which can be continued in private, and appear in your Inbox section by tagging them in a public channel
+  ☐ Notification tray and user @ tagging system (with push notifications in compatible browsers)
   
-  ☐ Desktop styling
+  ✔ Desktop styling @done(23-06-09 04:45)
 
   ☐ Interactive help tutorial which can be launched again from the user menu at any time
 

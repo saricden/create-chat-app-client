@@ -6,7 +6,7 @@ interface CheckmarkProps {
 export function Checkmark({ message }: CheckmarkProps) {
 
   return (
-    <div className={`flex flex-col items-center`}>
+    <div className={`flex flex-col items-center max-w-xs`}>
       <div className="success-checkmark">
         <div className="check-icon">
           <span className="icon-line line-tip" />

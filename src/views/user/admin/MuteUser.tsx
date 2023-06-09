@@ -138,41 +138,41 @@ export function MuteUser({ onSubmit }: MuteUserProps) {
 
   return (
     <div className={`flex flex-col h-full items-center`}>
-        <header className={`text-xl mb-2`}>Mute User</header>
+      <header className={`text-xl mb-2`}>Mute User</header>
 
-        <p className={`mb-5`}>
-          Muting a user will temporarily disable sending messages for them.
-        </p>
+      <p className={`mb-5`}>
+        Muting a user will temporarily disable them from sending users and interacting on this server.
+      </p>
 
-        <Select
-          options={userOptions}
-          placeholder="Select user..."
-          styles={selectStyles}
-          value={selectedUser}
-          onChange={(u: any) => setSelectedUser(u)}
-          isSearchable
-          className={`mb-4`}
-        />
+      <Select
+        options={userOptions}
+        placeholder="Select user..."
+        styles={selectStyles}
+        value={selectedUser}
+        onChange={(u: any) => setSelectedUser(u)}
+        isSearchable
+        className={`mb-4`}
+      />
 
-        <Select
-          options={muteOptions}
-          placeholder="Mute for..."
-          styles={selectStyles}
-          value={selectedMutePeriod}
-          onChange={(mp: any) => setSelectedMutePeriod(mp)}
-          isSearchable
-          className={`mb-4 transition-all ${selectedUser === null ? 'opacity-50' : ''}`}
-          isDisabled={selectedUser === null}
-        />
+      <Select
+        options={muteOptions}
+        placeholder="Mute for..."
+        styles={selectStyles}
+        value={selectedMutePeriod}
+        onChange={(mp: any) => setSelectedMutePeriod(mp)}
+        isSearchable
+        className={`mb-4 transition-all ${selectedUser === null ? 'opacity-50' : ''}`}
+        isDisabled={selectedUser === null}
+      />
 
-        <button
-          className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-red-500 text-red-500 text-center transition-all ${(selectedUser === null || selectedMutePeriod === null) ? 'opacity-50' : ''}`}
-          onClick={doMuteUser}
-          disabled={(selectedUser === null || selectedMutePeriod === null)}
-        >
-          Mute User
-        </button>
+      <button
+        className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-red-500 text-red-500 text-center transition-all ${(selectedUser === null || selectedMutePeriod === null) ? 'opacity-50' : ''}`}
+        onClick={doMuteUser}
+        disabled={(selectedUser === null || selectedMutePeriod === null)}
+      >
+        Mute User
+      </button>
 
-      </div>
+    </div>
   );
 }

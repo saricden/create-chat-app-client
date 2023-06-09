@@ -25,7 +25,7 @@ export function AvatarSelect({ className = '', onSelect, initSrc = '', color = '
 
   return (
     <div
-      className={`w-32 h-32 overflow-visible relative border-2 rounded-md bg-cover bg-center ${className}`}
+      className={`w-32 h-32 overflow-visible relative border-2 rounded-md bg-cover bg-center cursor-pointer ${className}`}
       style={{
         backgroundImage: preview === '' ? initSrc !== '' ? `url(${initSrc})` : undefined : `url(${preview})`
       }}

@@ -31,6 +31,7 @@ export function Chats() {
   const [lockScroll, setLockScroll] = useState(true);
   const [profileOpen, setProfileOpen] = useState(false);
   const [profile, setProfile] = useState<any>(null);
+  const [navOpen, setNavOpen] = useState(window.innerWidth >= 700);
 
   function cacheUser(userId: string, userData: any) {
     setUserCache((cache: any) => ({
@@ -271,48 +272,53 @@ export function Chats() {
   return (
     <>
       <Navbar
+        open={navOpen}
+        setOpen={setNavOpen}
         user={user}
         channels={channels}
         onUserUpdate={(user: any) => setUser(user)}
       />
 
-      <div
-        className={`h-screen w-full flex flex-col items-start justify-start p-4 pt-32 pb-16 overflow-y-scroll`}
-        ref={messagePanelRef}
-        onScroll={handleMessageScroll}
-      >
-        {
-          loadingMessages &&
-          <div className={`w-full flex items-center justify-center mb-4`}>
-            <Loader />
-          </div>
-        }
-        {
-          currentMessages && currentMessages.map((msg: any, i: number) => {
-            const msgUser = userCache[msg.user_id];
-            const loadingUser = (msgUser === undefined);
-            const fromSelf = (msg.user_id === user.auth_id);
+      <div className={`h-screen w-full flex flex-col items-center transition-all overflow-x-hidden ${navOpen ? 'pr-[20rem]' : ''}`}>
+        <div
+          className={`h-screen w-full max-w-5xl min-w-[375px] flex flex-col items-start justify-start p-4 pt-32 pb-16 overflow-y-scroll`}
+          ref={messagePanelRef}
+          onScroll={handleMessageScroll}
+        >
+          {
+            loadingMessages &&
+            <div className={`w-full flex items-center justify-center mb-4`}>
+              <Loader />
+            </div>
+          }
+          {
+            currentMessages && currentMessages.map((msg: any, i: number) => {
+              const msgUser = userCache[msg.user_id];
+              const loadingUser = (msgUser === undefined);
+              const fromSelf = (msg.user_id === user.auth_id);
 
-            return (
-              <Message
-                msg={msg}
-                msgUser={msgUser}
-                loadingUser={loadingUser}
-                fromSelf={fromSelf}
-                onViewProfile={viewProfile}
-                key={`m_${i}`}
-              />
-            );
-          })
-        }
+              return (
+                <Message
+                  msg={msg}
+                  msgUser={msgUser}
+                  loadingUser={loadingUser}
+                  fromSelf={fromSelf}
+                  onViewProfile={viewProfile}
+                  key={`m_${i}`}
+                />
+              );
+            })
+          }
 
-        {/* <Loader2 /> */}
+          {/* <Loader2 /> */}
+        </div>
       </div>
 
       <MessageBar
         msg={message}
         onChange={(val: string) => setMessage(val)}
         onSend={sendMessage}
+        navOpen={navOpen}
       />
 
       <div
@@ -320,15 +326,17 @@ export function Chats() {
         onClick={() => setProfileOpen(false)}
       />
 
-      <div className={`z-50 fixed left-0 bottom-0 w-full h-2/3 p-3 pt-12 bg-black text-white flex flex-col items-center justify-start rounded-t-md transition-all ${profileOpen ? '' : 'translate-y-full'}`}>
-        <button
-          className={`absolute right-3 top-3`}
-          onClick={() => setProfileOpen(false)}
-        >
-          <X size={28} />
-        </button>
+      <div className={`z-50 fixed left-0 bottom-0 w-full h-2/3 flex flex-col items-center justify-start pointer-events-none transition-all ${profileOpen ? '' : 'translate-y-full'}`}>
+        <div className={`relative w-full h-full max-w-3xl p-3 pt-12 bg-black text-white flex flex-col items-center justify-start rounded-t-md pointer-events-auto`}>
+          <button
+            className={`absolute right-3 top-3`}
+            onClick={() => setProfileOpen(false)}
+          >
+            <X size={28} />
+          </button>
 
-        <UserProfile user={profile} />
+          <UserProfile user={profile} />
+        </div>
       </div>
     </>
   );

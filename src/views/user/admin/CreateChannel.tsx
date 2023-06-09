@@ -105,7 +105,9 @@ export function CreateChannel() {
     return (
       <div className={`flex flex-col h-full items-center justify-center`}>
         <p className={`text-lg mb-5`}>
-          An app restart is required before the new channel {title} will be visible. Would you like to restart now?
+          An app restart is required before the new channel {title} will be visible.
+          <br /><br />
+          Would you like to restart now?
         </p>
 
         <button

@@ -31,8 +31,6 @@ export function Login() {
       catch (e) {
         console.warn(e);
       }
-
-      setLoading(false);
     }
     else {
       setErrored(true);
@@ -42,6 +40,12 @@ export function Login() {
   return (
     <main className={`relative w-full min-h-screen flex items-center justify-center p-4`}>
       <div className={`w-full max-w-sm flex flex-col items-center justify-center`}>
+        <img
+          className={`mb-8 max-w-[100px]`}
+          src="/icon-web.png"
+          alt={`${config.serverName} logo`}
+        />
+
         <h1 className={`text-3xl font-extrabold mb-8`}>{config.serverName}</h1>
 
         <Input

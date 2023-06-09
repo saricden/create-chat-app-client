@@ -14,13 +14,14 @@ interface NavbarProps {
   channels?: any
   user?: any
   onUserUpdate?: Function
+  open: boolean
+  setOpen: Function
 }
 
-export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
+export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: NavbarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const {pathname: path} = location;
-  const [open, setOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -81,7 +82,7 @@ export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
         />
       </nav>
       
-      <nav className={`z-50 bg-black text-white fixed top-14 left-0 w-full h-14 px-2 flex items-center overflow-y-hidden overflow-x-scroll`}>
+      <nav className={`z-50 bg-black text-white fixed top-14 left-0 w-full h-14 px-2 flex items-center overflow-y-hidden overflow-x-scroll transition-all ${open ? 'pr-[20rem]' : ''}`}>
         {
           channels.map((channel: any) => (
             <ChannelBtn
@@ -95,7 +96,7 @@ export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
         }
       </nav>
 
-      <div className={`z-50 bg-black text-white fixed top-0 right-0 flex flex-col w-full h-full p-3 transition-all ${open ? '' : 'translate-x-full'}`}>
+      <div className={`z-50 bg-black text-white fixed top-0 right-0 flex flex-col w-full max-w-xs h-full p-3 overflow-x-hidden transition-all ${open ? '' : 'translate-x-full'}`}>
         <div className={`w-full flex flex-row items-center justify-between overflow-x-hidden`}>
           <div className={`flex flex-row items-center`}>
             <button
@@ -121,7 +122,7 @@ export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
           }
         </div>
 
-        <div className={`absolute top-14 left-0 w-full p-3 flex flex-col transition-all`} style={{
+        <div className={`absolute top-14 right-0 w-full p-3 flex flex-col transition-all`} style={{
           transform: menuOpen ? 'translateX(calc(-100% - 12px))' : '',
           visibility: menuOpen ? 'hidden' : 'visible',
           height: 'calc(100% - 56px)'
@@ -195,7 +196,7 @@ export function Navbar({ locked, channels, user, onUserUpdate }: NavbarProps) {
         </div>
       </div>
 
-      <div className={`z-50 fixed top-0 left-0 w-full h-full p-6 bg-black text-white flex flex-col items-center justify-center transition-all ${logoutOpen ? '' : 'opacity-0 scale-75 translate-y-full'}`}>
+      <div className={`z-50 fixed top-0 right-0 w-full max-w-xs h-full p-6 bg-black text-white flex flex-col items-center justify-center transition-all ${logoutOpen ? '' : 'opacity-0 scale-75 translate-y-full'}`}>
 
         {
           loggingOut
