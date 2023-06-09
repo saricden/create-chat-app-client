@@ -175,16 +175,21 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
       else if (e.key === 'Enter' && userSearchKeyIndex !== null) {
         e.preventDefault();
 
-        const profile = userSearchResults[userSearchKeyIndex];
-        const {username} = profile;
-
-        let allWordsButLast = msg.split(' ');
-        allWordsButLast.pop();
-
-        const newMessage = `${allWordsButLast.join(' ')} @${username} `;
-        onChange(newMessage);
+        tagUser(userSearchKeyIndex);
       }
     }
+  }
+
+  function tagUser(i: number) {
+    const profile = userSearchResults[i];
+    const {username} = profile;
+
+    let allWordsButLast = msg.split(' ');
+    allWordsButLast.pop();
+    const newMessage = `${allWordsButLast.join(' ')} @${username} `;
+
+    onChange(newMessage);
+    inputRef.current?.focus();
   }
   
   return (
@@ -199,7 +204,7 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
               userSearchResults.map((user: any, i: number) => (
                 <button
                   className={`flex flex-row p-2 text-lg items-center justify-start transition-all ${userSearchKeyIndex === i ? 'pl-4 bg-white/10' : ''}`}
-                  onClick={() => console.log(user.auth_id)}
+                  onClick={() => tagUser(i)}
                   key={`us_${i}`}
                 >
                   <div
