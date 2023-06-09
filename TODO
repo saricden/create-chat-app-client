@@ -29,3 +29,4 @@ Minimum Hackathon TODO:
     ☐ System to account for DB downtime periods
       ☐ Email notification when DB ready?
     ☐ Create first admin user via script
+    ☐ Refactor to use .env.local instead of chat.config.json
