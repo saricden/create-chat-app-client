@@ -90,33 +90,37 @@ export function Chats() {
     const {$id: channelId} = currentChannel;
     let nextMessages = await getLatestMessages(channelId, nextPage);
 
-    nextMessages.forEach(async (msg: any, i: number) => {
-      if (userCache[msg.user_id] === undefined) {
-        const userData = await getUserData(msg.user_id);
-
-        cacheUser(msg.user_id, userData);
-      }
-      
-      if (msg.audio_id) {
-        try {
-          nextMessages[i].audioURL = await storage.getFileView(config.audioMessagesBucketId, msg.audio_id);
+    if (nextMessages) {
+      nextMessages.forEach(async (msg: any, i: number) => {
+        if (userCache[msg.user_id] === undefined) {
+          const userData = await getUserData(msg.user_id);
+  
+          cacheUser(msg.user_id, userData);
         }
-        catch (e) {
-          console.warn(e);
+        
+        if (msg.audio_id) {
+          try {
+            // @ts-ignore
+            nextMessages[i].audioURL = await storage.getFileView(config.audioMessagesBucketId, msg.audio_id);
+          }
+          catch (e) {
+            console.warn(e);
+          }
         }
-      }
-    });
+      });
+  
+      const channelMessages = [
+        ...nextMessages,
+        ...currentMessages
+      ];
+  
+      setMessages({
+        ...messages,
+        [channelId]: channelMessages
+      });
+      setPage(nextPage);
+    }
 
-    const channelMessages = [
-      ...nextMessages,
-      ...currentMessages
-    ];
-
-    setMessages({
-      ...messages,
-      [channelId]: channelMessages
-    });
-    setPage(nextPage);
     setLoadingMessages(false);
   }
 
@@ -200,7 +204,9 @@ export function Chats() {
     const unsubscribe = addMessageListener(handleNewMessage);
 
     return () => {
-      unsubscribe();
+      if (unsubscribe) {
+        unsubscribe();
+      }
     }
   }, [handleNewMessage]);
 
@@ -216,36 +222,40 @@ export function Chats() {
         });
       }
 
-      for (let i = 0; i < channels.length; i++) {
-        const {$id: channelId}: any = channels[i];
-        const channelMessages = await getLatestMessages(channelId);
-
-        initMessages[channelId] = channelMessages;
-
-        for (let i = 0; i < channelMessages.length; i++) {
-          const msg = initMessages[channelId][i];
-
-          if (userCache[msg.user_id] === undefined) {
-            getUserData(msg.user_id).then((userData) => {
-              cacheUser(msg.user_id, userData);
-            });
-          }
-
-          if (msg.audio_id) {
-            try {
-              initMessages[channelId][i].audioURL = await storage.getFileDownload(config.audioMessagesBucketId, msg.audio_id);
+      if (channels) {
+        for (let i = 0; i < channels.length; i++) {
+          const {$id: channelId}: any = channels[i];
+          const channelMessages = await getLatestMessages(channelId);
+  
+          initMessages[channelId] = channelMessages;
+  
+          if (channelMessages) {
+            for (let i = 0; i < channelMessages.length; i++) {
+              const msg = initMessages[channelId][i];
+    
+              if (userCache[msg.user_id] === undefined) {
+                getUserData(msg.user_id).then((userData) => {
+                  cacheUser(msg.user_id, userData);
+                });
+              }
+    
+              if (msg.audio_id) {
+                try {
+                  initMessages[channelId][i].audioURL = await storage.getFileDownload(config.audioMessagesBucketId, msg.audio_id);
+                }
+                catch (e) {
+                  console.warn(e);
+                }
+              }
             }
-            catch (e) {
-              console.warn(e);
-            }
           }
+  
+          setUser(user);
+          setChannels(channels);
+          setMessages(initMessages);
+          scrollToBottom('smooth');
+  
         }
-
-        setUser(user);
-        setChannels(channels);
-        setMessages(initMessages);
-        scrollToBottom('smooth');
-
       }
     }
     

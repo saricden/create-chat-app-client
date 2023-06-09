@@ -23,6 +23,7 @@ export async function getUserData(userId: string | null = null) {
       config.databaseId,
       config.usersCollectionId,
       [
+        // @ts-ignore
         q.equal('auth_id', [auth_id])
       ]
     );
@@ -134,6 +135,7 @@ export async function updateUser(authId: string, username: string, bio: string |
     if (avatarFile) {
       const userData = await getUserData(authId);
 
+      // @ts-ignore
       const { avatar_id: oldAvatarId } = userData;
 
       await storage.deleteFile(config.profilePicturesBucketId, oldAvatarId);

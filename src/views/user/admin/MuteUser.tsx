@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Select, { StylesConfig } from 'react-select';
 import { Loader } from '../../../components/Loader';
-import { archiveChannel, getAllUsers } from '../../../utils/admin';
+import { getAllUsers } from '../../../utils/admin';
 import { getUserData } from '../../../utils/account';
 
 const selectStyles: StylesConfig = {
@@ -114,7 +114,7 @@ export function MuteUser() {
     loadUsers();
   }, []);
 
-  async function saveChannel() {
+  async function muteUser() {
     setLoading(true);
 
     // await archiveChannel(
@@ -185,7 +185,7 @@ export function MuteUser() {
 
         <button
           className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-red-500 text-red-500 text-center transition-all ${selectedUser === null ? 'opacity-50' : ''}`}
-          onClick={saveChannel}
+          onClick={muteUser}
           disabled={selectedUser === null}
         >
           Mute User

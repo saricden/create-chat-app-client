@@ -3,7 +3,7 @@ import { Input } from '../../../components/Input';
 import Select, { StylesConfig, components } from 'react-select';
 import * as featherIcons from 'react-feather';
 import { Loader } from '../../../components/Loader';
-import { createChannel, updateChannel } from '../../../utils/admin';
+import { updateChannel } from '../../../utils/admin';
 import { getChannels } from '../../../utils/chat';
 
 const selectStyles: StylesConfig = {
