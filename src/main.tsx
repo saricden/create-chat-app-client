@@ -8,5 +8,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
 if ('serviceWorker' in navigator) {
   // navigator.serviceWorker.register('/sw.js', { scope: '/' });
-  navigator.serviceWorker.register('/sw.js');
+  navigator.serviceWorker.register('/sw.js', {
+    updateViaCache: 'none'
+  });
 }
