@@ -1,6 +1,9 @@
 self.addEventListener('push', (e) => {
   const json = e.data.json();
 
+  console.log('Incoming push!');
+  console.log(json);
+
   e.waitUntil(self.registration.showNotification(
     `@${json.username}`,
     {

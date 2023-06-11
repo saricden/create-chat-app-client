@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Loader } from "../../components/Loader";
-import { getVapidPublicKey, setUserPushSubscription } from "../../utils/account";
+import { getVapidPublicKey, addUserPushSubscription } from "../../utils/account";
 
 interface SettingsProps {
 
@@ -46,7 +46,7 @@ export function Settings({}: SettingsProps) {
             applicationServerKey: publicKey
           });
 
-          await setUserPushSubscription(JSON.stringify(subscription));
+          await addUserPushSubscription(JSON.stringify(subscription));
 
           setPushGranted(true);
         }

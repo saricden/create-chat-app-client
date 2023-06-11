@@ -29,5 +29,6 @@ Minimum Hackathon TODO:
       ☐ Email notification when DB ready?
     ☐ Create first admin user via script
     ☐ Refactor to use .env.local instead of chat.config.json
+    ☐ Full review of DB structures (permissions, functions, etc)
   
   ☐ Welcome messages!

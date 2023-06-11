@@ -220,7 +220,7 @@ export async function getVapidPublicKey() {
   return null;
 }
 
-export async function setUserPushSubscription(push_subscription: string) {
+export async function addUserPushSubscription(push_subscription: string) {
   try {
     const accountData = await account.get();
     const {$id: auth_id} = accountData;
@@ -234,14 +234,18 @@ export async function setUserPushSubscription(push_subscription: string) {
     const [user] = userData.documents;
 
     if (user) {
-      const {$id: userId} = user;
+      const {$id: userId, push_subscriptions} = user;
+      const subscriptions = [
+        ...push_subscriptions,
+        push_subscription
+      ];
 
       await db.updateDocument(
         config.databaseId,
         config.usersCollectionId,
         userId,
         {
-          push_subscription
+          push_subscriptions: subscriptions
         }
       );
 
