@@ -7,7 +7,7 @@ self.addEventListener('push', (e) => {
     `@${json.username}`,
     {
       body: json.message,
-      badge: '/icon.png',
+      badge: '/badge.png',
       timestamp: Date.parse(json.posted_at)
     }
   ));
