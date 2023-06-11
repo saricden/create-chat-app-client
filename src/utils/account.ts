@@ -224,17 +224,17 @@ export async function addUserPushSubscription(push_subscription: string) {
   try {
     const accountData = await account.get();
     const {$id: auth_id} = accountData;
-    const userData = await db.listDocuments(
+    const profileData = await db.listDocuments(
       config.databaseId,
-      config.usersCollectionId,
+      config.profilesCollectionId,
       [
         q.equal('auth_id', [auth_id])
       ]
     );
-    const [user] = userData.documents;
+    const [profile] = profileData.documents;
 
-    if (user) {
-      const {$id: userId, push_subscriptions} = user;
+    if (profile) {
+      const {$id: profileId, push_subscriptions} = profile;
       const subscriptions = [
         ...push_subscriptions,
         push_subscription
@@ -242,8 +242,8 @@ export async function addUserPushSubscription(push_subscription: string) {
 
       await db.updateDocument(
         config.databaseId,
-        config.usersCollectionId,
-        userId,
+        config.profilesCollectionId,
+        profileId,
         {
           push_subscriptions: subscriptions
         }
