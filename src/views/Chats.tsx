@@ -46,6 +46,7 @@ export function Chats() {
         channel_id: currentChannel.$id,
         message,
         user_id: user.auth_id,
+        from_user_avatar_url: user.avatar,
         posted_at: new Date()
       };
 

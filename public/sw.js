@@ -8,6 +8,7 @@ self.addEventListener('push', (e) => {
     {
       body: json.message,
       badge: '/badge.png',
+      icon: json.avatar_url,
       timestamp: Date.parse(json.posted_at)
     }
   ));
