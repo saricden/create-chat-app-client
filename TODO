@@ -23,13 +23,13 @@ Minimum Hackathon TODO:
   ☐ Clean up codebase (components, types, etc.)
   
   ☐ Final touches on npx create script
-    ☐ Add admin team
-    ☐ Update write permissions for admin team
+    ✔ Add admin team @done(23-06-14 00:22)
+    ✔ Update write permissions for admin team @done(23-06-14 00:22)
     ☐ System to account for DB downtime periods
       ☐ Email notification when DB ready?
-    ☐ Create first admin user via script
-    ☐ Refactor to use .env.local instead of chat.config.json
-    ☐ Full review of DB structures (permissions, functions, etc)
+    ✔ Create first admin user via script @done(23-06-14 06:26)
+    ✔ Refactor to use .env.local instead of chat.config.json @done(23-06-14 00:22)
+    ✔ Full review of DB structures (permissions, functions, etc) @done(23-06-14 00:23)
     ☐ Add icon config and image generation for required PWA / favicon images
     ☐ Add colour config
   

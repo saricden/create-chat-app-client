@@ -1,9 +1,10 @@
-import { Client, Account, Storage, Databases, Query, ID, Functions } from 'appwrite';
+import { Client, Account, Storage, Databases, Query, ID, Functions, Teams } from 'appwrite';
 
 const client = new Client();
 const account = new Account(client);
 const storage = new Storage(client);
 const functions = new Functions(client);
+const teams = new Teams(client);
 const db = new Databases(client);
 const q = Query;
 
@@ -16,6 +17,7 @@ export {
   account,
   storage,
   functions,
+  teams,
   db,
   q,
   ID

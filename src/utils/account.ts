@@ -1,4 +1,4 @@
-import { account, storage, ID, db, q, functions } from "./appwrite";
+import { account, storage, ID, db, q, functions, teams } from "./appwrite";
 
 /** Gets useful data for the currently logged in user, or the user provided by Id
  * Returns null if something goes wrong, or:
@@ -46,6 +46,10 @@ export async function getUserData(userId: string | null = null) {
           const avatarURL = await storage.getFileView('profile_pictures', profile.avatar_id);
           avatar = avatarURL.href;
         }
+
+        const adminResults = await teams.listMemberships('admin', undefined, auth_id!);
+
+        console.log(adminResults);
   
         return {
           ...user,
