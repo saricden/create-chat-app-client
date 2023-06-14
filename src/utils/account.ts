@@ -47,15 +47,19 @@ export async function getUserData(userId: string | null = null) {
           avatar = avatarURL.href;
         }
 
-        const adminResults = await teams.listMemberships('admin', undefined, auth_id!);
         let isAdmin = false;
 
-        if (adminResults.memberships.length === 1) {
-          const {userId: adminUserId} = adminResults.memberships[0];
+        try {
+          const adminResults = await teams.listMemberships('admin', undefined, auth_id!);
 
-          isAdmin = (auth_id === adminUserId);
-        }
+          if (adminResults.memberships.length === 1) {
+            const {userId: adminUserId} = adminResults.memberships[0];
   
+            isAdmin = (auth_id === adminUserId);
+          }
+        }
+        catch (e) {}
+        
         return {
           ...user,
           ...profile,
