@@ -134,7 +134,7 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
         taggedUsers.forEach((maybeTaggedUser: any) => {
           const {username, auth_id} = maybeTaggedUser;
 
-          if (msg.match(`@${username}`)) {
+          if (msg.match(`@${username}`) && !finalTaggedUserIds.includes(auth_id)) {
             finalTaggedUserIds.push(auth_id);
           }
         });
