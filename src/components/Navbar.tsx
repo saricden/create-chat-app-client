@@ -149,7 +149,7 @@ export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: 
           </button>
 
           {
-            user.show_admin_ui &&
+            user.isAdmin &&
             <button
               className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-300 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
               onClick={() => openMenu('Admin')}
@@ -194,7 +194,7 @@ export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: 
           }
 
           {
-            menu === 'Admin' &&
+            menu === 'Admin' && user.isAdmin &&
             <Admin
               menu={adminMenu}
               setMenu={setAdminMenu}
