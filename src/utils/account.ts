@@ -133,12 +133,14 @@ export async function register(username: string, avatarFile: any) {
     const {$id: auth_id} = accountData;
     let avatar_id = null;
 
+    console.log(auth_id);
+
     if (avatarFile) {
       const file = await storage.createFile('profile_pictures', ID.unique(), avatarFile);
       avatar_id = file.$id;
     }
 
-    const promiseUser = db.createDocument(
+    await db.createDocument(
       'chat',
       'users',
       ID.unique(),
@@ -147,7 +149,7 @@ export async function register(username: string, avatarFile: any) {
       }
     );
 
-    const promiseProfile = db.createDocument(
+    await db.createDocument(
       'chat',
       'profiles',
       ID.unique(),
@@ -158,10 +160,11 @@ export async function register(username: string, avatarFile: any) {
       }
     );
 
-    await Promise.all([
-      promiseUser,
-      promiseProfile
-    ]);
+    // Not sure why, but this was causing either the users or the profiles doc creation fail, forcing user to register twice
+    // await Promise.all([
+    //   promiseUser,
+    //   promiseProfile
+    // ]);
   }
   catch (e) {
     console.warn(e);
