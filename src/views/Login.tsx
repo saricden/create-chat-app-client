@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import config from '../../chat.config.json';
 import { Input } from '../components/Input';
 import { Button } from '../components/Button';
 import { account, ID } from '../utils/appwrite';
@@ -43,10 +42,10 @@ export function Login() {
         <img
           className={`mb-8 max-w-[100px]`}
           src="/icon-web.png"
-          alt={`${config.serverName} logo`}
+          alt={`${import.meta.env.VITE_serverName} logo`}
         />
 
-        <h1 className={`text-3xl font-extrabold mb-8`}>{config.serverName}</h1>
+        <h1 className={`text-3xl font-extrabold mb-8`}>{import.meta.env.VITE_serverName}</h1>
 
         <Input
           type="email"

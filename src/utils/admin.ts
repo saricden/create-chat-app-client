@@ -1,11 +1,10 @@
 import { ID, db, q } from "./appwrite";
-import config from '../../chat.config.json';
 
 export async function createChannel(title: string, slug: string, icon: string) {
   try {
     await db.createDocument(
-      config.databaseId,
-      config.channelsCollectionId,
+      'chat',
+      'channels',
       ID.unique(),
       {
         title,
@@ -23,8 +22,8 @@ export async function createChannel(title: string, slug: string, icon: string) {
 export async function updateChannel(id: string, title: string, slug: string, icon: string) {
   try {
     await db.updateDocument(
-      config.databaseId,
-      config.channelsCollectionId,
+      'chat',
+      'channels',
       id,
       {
         title,
@@ -41,8 +40,8 @@ export async function updateChannel(id: string, title: string, slug: string, ico
 export async function archiveChannel(id: string) {
   try {
     await db.updateDocument(
-      config.databaseId,
-      config.channelsCollectionId,
+      'chat',
+      'channels',
       id,
       {
         archived: true
@@ -57,8 +56,8 @@ export async function archiveChannel(id: string) {
 export async function restorehannel(id: string) {
   try {
     await db.updateDocument(
-      config.databaseId,
-      config.channelsCollectionId,
+      'chat',
+      'channels',
       id,
       {
         archived: false
@@ -73,12 +72,12 @@ export async function restorehannel(id: string) {
 export async function getAllUsers() {
   try {
     const usersData = await db.listDocuments(
-      config.databaseId,
-      config.usersCollectionId
+      'chat',
+      'users'
     );
     const profilesData = await db.listDocuments(
-      config.databaseId,
-      config.profilesCollectionId
+      'chat',
+      'profiles'
     );
     const {documents: users} = usersData;
     const {documents: profiles} = profilesData;
@@ -101,8 +100,8 @@ export async function getAllUsers() {
 export async function muteUser(auth_id: string, mutePeriod: number) {
   try {
     const userData = await db.listDocuments(
-      config.databaseId,
-      config.usersCollectionId,
+      'chat',
+      'users',
       [
         q.equal('auth_id', [auth_id])
       ]
@@ -115,8 +114,8 @@ export async function muteUser(auth_id: string, mutePeriod: number) {
       const muted_until = new Date(mutedUntilMS);
 
       await db.updateDocument(
-        config.databaseId,
-        config.usersCollectionId,
+        'chat',
+        'users',
         userId,
         {
           muted_until

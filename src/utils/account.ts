@@ -1,5 +1,4 @@
 import { account, storage, ID, db, q, functions } from "./appwrite";
-import config from '../../chat.config.json';
 
 /** Gets useful data for the currently logged in user, or the user provided by Id
  * Returns null if something goes wrong, or:
@@ -20,8 +19,8 @@ export async function getUserData(userId: string | null = null) {
     }
     
     const userData = await db.listDocuments(
-      config.databaseId,
-      config.usersCollectionId,
+      'chat',
+      'users',
       [
         // @ts-ignore
         q.equal('auth_id', [auth_id])
@@ -30,8 +29,8 @@ export async function getUserData(userId: string | null = null) {
   
     if (userData.documents.length > 0) {
       const profileData = await db.listDocuments(
-        config.databaseId,
-        config.profilesCollectionId,
+        'chat',
+        'profiles',
         [
           // @ts-ignore
           q.equal('auth_id', [auth_id])
@@ -44,7 +43,7 @@ export async function getUserData(userId: string | null = null) {
         let avatar = null;
 
         if (profile.avatar_id) {
-          const avatarURL = await storage.getFileView(config.profilePicturesBucketId, profile.avatar_id);
+          const avatarURL = await storage.getFileView('profile_pictures', profile.avatar_id);
           avatar = avatarURL.href;
         }
   
@@ -87,8 +86,8 @@ export async function userHasProfile() {
     const accountData = await account.get();
     const {$id: auth_id} = accountData;
     const profileData = await db.listDocuments(
-      config.databaseId,
-      config.profilesCollectionId,
+      'chat',
+      'profiles',
       [
         q.equal('auth_id', [auth_id])
       ]
@@ -121,13 +120,13 @@ export async function register(username: string, avatarFile: any) {
     let avatar_id = null;
 
     if (avatarFile) {
-      const file = await storage.createFile(config.profilePicturesBucketId, ID.unique(), avatarFile);
+      const file = await storage.createFile('profile_pictures', ID.unique(), avatarFile);
       avatar_id = file.$id;
     }
 
     const promiseUser = db.createDocument(
-      config.databaseId,
-      config.usersCollectionId,
+      'chat',
+      'users',
       ID.unique(),
       {
         auth_id
@@ -135,8 +134,8 @@ export async function register(username: string, avatarFile: any) {
     );
 
     const promiseProfile = db.createDocument(
-      config.databaseId,
-      config.profilesCollectionId,
+      'chat',
+      'profiles',
       ID.unique(),
       {
         auth_id,
@@ -169,9 +168,9 @@ export async function updateUser(authId: string, username: string, bio: string |
       // @ts-ignore
       const { avatar_id: oldAvatarId } = userData;
 
-      await storage.deleteFile(config.profilePicturesBucketId, oldAvatarId);
+      await storage.deleteFile('profile_pictures', oldAvatarId);
 
-      const file = await storage.createFile(config.profilePicturesBucketId, ID.unique(), avatarFile);
+      const file = await storage.createFile('profile_pictures', ID.unique(), avatarFile);
 
       patch = {
         ...patch,
@@ -180,8 +179,8 @@ export async function updateUser(authId: string, username: string, bio: string |
     }
 
     const profileData = await db.listDocuments(
-      config.databaseId,
-      config.profilesCollectionId,
+      'chat',
+      'profiles',
       [
         q.equal('auth_id', [authId])
       ]
@@ -190,8 +189,8 @@ export async function updateUser(authId: string, username: string, bio: string |
     const {$id: profileId} = profile;
 
     await db.updateDocument(
-      config.databaseId,
-      config.profilesCollectionId,
+      'chat',
+      'profiles',
       profileId,
       patch
     );
@@ -225,8 +224,8 @@ export async function addUserPushSubscription(push_subscription: string) {
     const accountData = await account.get();
     const {$id: auth_id} = accountData;
     const profileData = await db.listDocuments(
-      config.databaseId,
-      config.profilesCollectionId,
+      'chat',
+      'profiles',
       [
         q.equal('auth_id', [auth_id])
       ]
@@ -241,8 +240,8 @@ export async function addUserPushSubscription(push_subscription: string) {
       ];
 
       await db.updateDocument(
-        config.databaseId,
-        config.profilesCollectionId,
+        'chat',
+        'profiles',
         profileId,
         {
           push_subscriptions: subscriptions

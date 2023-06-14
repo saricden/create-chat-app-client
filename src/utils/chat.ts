@@ -1,12 +1,11 @@
 import { client, db, q, storage } from "./appwrite";
-import config from '../../chat.config.json';
 import { RealtimeResponseEvent } from "appwrite";
 
 export async function getChannels(archived = false) {
   try {
     const channelData = await db.listDocuments(
-      config.databaseId,
-      config.channelsCollectionId,
+      'chat',
+      'channels',
       [
         q.equal('archived', [archived])
       ]
@@ -25,8 +24,8 @@ export async function getChannels(archived = false) {
 export async function getLatestMessages(channelId: string, page: number = 0) {
   try {
     const messagesData = await db.listDocuments(
-      config.databaseId,
-      config.messagesCollectionId,
+      'chat',
+      'messages',
       [
         q.equal('channel_id', [channelId]),
         q.orderDesc('posted_at'),
@@ -47,7 +46,7 @@ export async function getLatestMessages(channelId: string, page: number = 0) {
 
 export function addMessageListener(callback: (payload: RealtimeResponseEvent<unknown>) => void) {
   try {
-    const event = `databases.${config.databaseId}.collections.${config.messagesCollectionId}.documents`;
+    const event = `databases.${'chat'}.collections.${'messages'}.documents`;
     return client.subscribe(event, callback);
   }
   catch (e) {
@@ -60,8 +59,8 @@ export function addMessageListener(callback: (payload: RealtimeResponseEvent<unk
 export async function findByUsername(username: string) {
   try {
     const profilesData = await db.listDocuments(
-      config.databaseId,
-      config.profilesCollectionId,
+      'chat',
+      'profiles',
       [
         q.search('username', username)
       ]
@@ -73,7 +72,7 @@ export async function findByUsername(username: string) {
 
       if (p.avatar_id) {
         const avatarURL = await storage.getFileView(
-          config.profilePicturesBucketId,
+          'profile_pictures',
           p.avatar_id
         );
 

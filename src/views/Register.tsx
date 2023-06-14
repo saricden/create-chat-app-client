@@ -1,6 +1,5 @@
 import nl2br from "react-nl2br";
 import { Navbar } from "../components/Navbar";
-import config from '../../chat.config.json';
 import { AvatarSelect } from "../components/AvatarSelect";
 import { redirect, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -29,7 +28,10 @@ export function Register() {
 
       <main className={`relative pt-20 w-full min-h-screen flex flex-col items-center p-4`}>
         <div className={`w-full max-w-sm flex flex-col items-center justify-center`}>
-          <p className={`text-lg mb-6`}>{nl2br(config.welcomeMessage)}</p>
+          <p className={`text-lg mb-6`}>
+            Welcome to the server!<br />
+            Complete your registration below to begin chatting.
+          </p>
 
           <AvatarSelect
             className="mb-6 border-black"

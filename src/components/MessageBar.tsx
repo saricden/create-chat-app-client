@@ -4,7 +4,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { createSpeechlySpeechRecognition } from '@speechly/speech-recognition-polyfill';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { Mic, Play, Send, Square, X } from "react-feather";
-import config from '../../chat.config.json';
 import { Loader } from './Loader';
 // @ts-ignore
 import { useAudioRecorder } from 'react-audio-voice-recorder';
@@ -12,7 +11,7 @@ import WaveSurfer from 'wavesurfer.js';
 import { findByUsername } from '../utils/chat';
 import novatar from '../assets/novatar.jpg';
 
-const appId = config.speechlyAppId;
+const appId = import.meta.env.VITE_speechlyAppId;
 const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(appId);
 SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
 

@@ -30,5 +30,7 @@ Minimum Hackathon TODO:
     ☐ Create first admin user via script
     ☐ Refactor to use .env.local instead of chat.config.json
     ☐ Full review of DB structures (permissions, functions, etc)
+    ☐ Add icon config and image generation for required PWA / favicon images
+    ☐ Add colour config
   
   ☐ Welcome messages!

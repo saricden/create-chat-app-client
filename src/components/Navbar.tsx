@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import config from '../../chat.config.json';
 import novatar from '../assets/novatar.jpg';
 import { ChannelBtn } from './ChannelBtn';
 import { useState } from 'react';
@@ -58,7 +57,7 @@ export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: 
           alt=""
         />
 
-        <h1>{config.serverName}</h1>
+        <h1>{import.meta.env.VITE_serverName}</h1>
       </nav>
     );
   }
@@ -72,7 +71,7 @@ export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: 
           alt=""
         />
 
-        <h1>{config.serverName}</h1>
+        <h1>{import.meta.env.VITE_serverName}</h1>
 
         <button
           className={`ml-auto w-9 h-9 bg-cover bg-center rounded-md border-2 border-white transition-all ${open ? 'opacity-0' : ''}`}

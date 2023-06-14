@@ -1,7 +1,6 @@
 import { redirect, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 import { Loader } from '../components/Loader';
-import config from '../../chat.config.json';
 import { addMessageListener, getChannels, getLatestMessages } from '../utils/chat';
 import { getUserData } from '../utils/account';
 import { useEffect, useRef, useState } from 'react';
@@ -54,7 +53,7 @@ export function Chats() {
       setLockScroll(true);
 
       if (audioFile) {
-        const file = await storage.createFile(config.audioMessagesBucketId, ID.unique(), audioFile);
+        const file = await storage.createFile('audio_messages', ID.unique(), audioFile);
         const {$id: audio_id} = file;
 
         messageData = {
@@ -71,8 +70,8 @@ export function Chats() {
       }
       
       db.createDocument(
-        config.databaseId,
-        config.messagesCollectionId,
+        'chat',
+        'messages',
         ID.unique(),
         messageData
       );
@@ -110,7 +109,7 @@ export function Chats() {
         if (msg.audio_id) {
           try {
             // @ts-ignore
-            nextMessages[i].audioURL = await storage.getFileView(config.audioMessagesBucketId, msg.audio_id);
+            nextMessages[i].audioURL = await storage.getFileView('audio_messages', msg.audio_id);
           }
           catch (e) {
             console.warn(e);
@@ -169,7 +168,7 @@ export function Chats() {
 
       if (msg.audio_id) {
         try {
-          newMessage.audioURL = await storage.getFileView(config.audioMessagesBucketId, msg.audio_id);
+          newMessage.audioURL = await storage.getFileView('audio_messages', msg.audio_id);
         }
         catch (e) {
           console.warn(e);
@@ -250,7 +249,7 @@ export function Chats() {
     
               if (msg.audio_id) {
                 try {
-                  initMessages[channelId][i].audioURL = await storage.getFileDownload(config.audioMessagesBucketId, msg.audio_id);
+                  initMessages[channelId][i].audioURL = await storage.getFileDownload('audio_messages', msg.audio_id);
                 }
                 catch (e) {
                   console.warn(e);
@@ -371,7 +370,7 @@ export async function bootServer() {
 export function BootView() {
   return (
     <main className={`w-full min-h-screen flex items-center justify-center p-4`}>
-      <Loader message={`${config.serverName} is booting...`} />
+      <Loader message={`${import.meta.env.VITE_serverName} is booting...`} />
     </main>
   );
 }

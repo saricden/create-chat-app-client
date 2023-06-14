@@ -1,5 +1,4 @@
 import { Client, Account, Storage, Databases, Query, ID, Functions } from 'appwrite';
-import config from '../../chat.config.json';
 
 const client = new Client();
 const account = new Account(client);
@@ -10,7 +9,7 @@ const q = Query;
 
 client
     .setEndpoint('https://cloud.appwrite.io/v1')
-    .setProject(config.appwriteProjectId);
+    .setProject(import.meta.env.VITE_appwriteProjectId);
 
 export {
   client,
