@@ -133,13 +133,12 @@ export async function register(username: string, avatarFile: any) {
     const {$id: auth_id} = accountData;
     let avatar_id = null;
 
-    console.log(auth_id);
-
     if (avatarFile) {
       const file = await storage.createFile('profile_pictures', ID.unique(), avatarFile);
       avatar_id = file.$id;
     }
 
+    // const promiseUser = await db.createDocument(
     await db.createDocument(
       'chat',
       'users',
@@ -149,6 +148,7 @@ export async function register(username: string, avatarFile: any) {
       }
     );
 
+    // const promiseProfile = await db.createDocument(
     await db.createDocument(
       'chat',
       'profiles',
