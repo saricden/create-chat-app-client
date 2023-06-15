@@ -154,7 +154,7 @@ export function MessageBar({ msg, onChange, onSend, navOpen, placeholder, disabl
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  function handleSearchSelect(e: any) {
+  function handleKeyDown(e: any) {
     if (doUserSearch) {
       if (e.key === 'ArrowUp') {
         e.preventDefault();
@@ -190,6 +190,12 @@ export function MessageBar({ msg, onChange, onSend, navOpen, placeholder, disabl
         e.preventDefault();
 
         tagUser(userSearchKeyIndex);
+      }
+    }
+    else {
+      if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        handleActionBtnClick();
       }
     }
   }
@@ -248,7 +254,7 @@ export function MessageBar({ msg, onChange, onSend, navOpen, placeholder, disabl
             className={`w-full min-h-12 outline-none resize-none bg-transparent`}
             value={msg}
             onChange={(e) => onChange(e.target.value)}
-            onKeyDown={handleSearchSelect}
+            onKeyDown={handleKeyDown}
             maxRows={4}
             ref={inputRef}
             placeholder={placeholder}

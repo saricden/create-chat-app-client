@@ -341,10 +341,12 @@ export function Chats() {
           ...userNotifications
         ]);
       }
-      else {
-        console.log(event);
-        console.log(n);
-        console.log(`~~~~~~~~~`);
+      else if (event === 'delete') {
+        // @ts-ignore
+        const {$id: deleteId} = n;
+        const newNotifications = userNotifications.filter((oldN: any) => oldN.$id !== deleteId);
+
+        setUserNotifications(newNotifications);
       }
     });
 
