@@ -16,9 +16,10 @@ interface NavbarProps {
   onUserUpdate?: Function
   open?: boolean
   setOpen?: Function
+  notifications: any[]
 }
 
-export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: NavbarProps) {
+export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen, notifications }: NavbarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const {pathname: path} = location;
@@ -128,33 +129,39 @@ export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: 
           height: 'calc(100% - 56px)'
         }}>
           <button
-            className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-100 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+            className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-100 visible flex flex-row items-center justify-center ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
             onClick={() => openMenu('Notifications')}
           >
-            Notifications
+            {
+              notifications.length > 0 &&
+              <span className={`bg-white text-black text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center mr-2 cursor-pointer`}>
+                {notifications.length}
+              </span>
+            }
+            <label className={`cursor-pointer`}>Notifications</label>
           </button>
 
           <button
-            className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-150 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+            className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-150 visible flex flex-row items-center justify-center ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
             onClick={() => openMenu('MyProfile')}
           >
-            My Profile
+            <label className={`cursor-pointer`}>My Profile</label>
           </button>
 
           <button
-            className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-200 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+            className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-200 visible flex flex-row items-center justify-center ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
             onClick={() => openMenu('Settings')}
           >
-            Settings
+            <label className={`cursor-pointer`}>Settings</label>
           </button>
 
           {
             user.isAdmin &&
             <button
-              className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-300 visible ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
+              className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center transition-all delay-300 visible flex flex-row items-center justify-center ${!open ? '-translate-y-1/2 opacity-0' : ''}`}
               onClick={() => openMenu('Admin')}
             >
-              Admin
+              <label className={`cursor-pointer`}>Admin</label>
             </button>
           }
 
@@ -175,6 +182,7 @@ export function Navbar({ locked, channels, user, onUserUpdate, open, setOpen }: 
             menu === 'Notifications' &&
             <Notifications
               user={user}
+              notifications={notifications}
             />
           }
 

@@ -303,15 +303,11 @@ export async function addUserPushSubscription(push_subscription: string) {
 
 export async function getUserNotifications() {
   try {
-    const accountData = await account.get();
-    const auth_id = accountData.$id;
     const notificationsData = await db.listDocuments(
       'chat',
       'notifications',
       [
-        q.equal('for_user_id', [auth_id]),
-        q.equal('read', false),
-        q.orderAsc('posted_at')
+        q.orderDesc('posted_at')
       ]
     );
 
@@ -322,4 +318,16 @@ export async function getUserNotifications() {
   }
 
   return [];
+}
+
+export function addNotificationListener(callback: (payload: RealtimeResponseEvent<unknown>) => void) {
+  try {
+    const event = `databases.chat.collections.notifications.documents`;
+    return client.subscribe(event, callback);
+  }
+  catch (e) {
+    console.warn(e);
+  }
+
+  return false;
 }

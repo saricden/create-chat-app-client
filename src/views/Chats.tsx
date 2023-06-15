@@ -2,7 +2,7 @@ import { redirect, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 import { Loader } from '../components/Loader';
 import { addMessageListener, getChannels, getLatestMessages } from '../utils/chat';
-import { addUserUpdateListener, getUserData, getUserNotifications } from '../utils/account';
+import { addNotificationListener, addUserUpdateListener, getUserData, getUserNotifications } from '../utils/account';
 import { useEffect, useRef, useState } from 'react';
 import { MessageBar } from '../components/MessageBar';
 import { ID, db, storage } from '../utils/appwrite';
@@ -35,6 +35,7 @@ export function Chats() {
   const [userMuted, setUserMuted] = useState(false);
   const [mutePlaceholder, setMutePlaceholder] = useState('');
   const [muteTimer, setMuteTimer] = useState<number | null>(null);
+  const [userNotifications, setUserNotifications] = useState<any>([]);
 
   function cacheUser(userId: string, userData: any) {
     setUserCache((cache: any) => ({
@@ -308,9 +309,10 @@ export function Chats() {
         }
       }
 
-      console.log(notifications);
+      
       
       setUser(user);
+      setUserNotifications(notifications);
       setChannels(channels);
       setMessages(initMessages);
       scrollToBottom('smooth');
@@ -328,6 +330,31 @@ export function Chats() {
     initChats();
   }, []);
 
+  useEffect(() => {
+    // @ts-ignore
+    const unsubscribe = addNotificationListener(({ events, payload: n }) => {
+      const event = events[0].split('.')[events[0].split('.').length - 1];
+
+      if (event === 'create') {
+        setUserNotifications([
+          n,
+          ...userNotifications
+        ]);
+      }
+      else {
+        console.log(event);
+        console.log(n);
+        console.log(`~~~~~~~~~`);
+      }
+    });
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [userNotifications]);
+
   if (!user) {
     return (
       <BootView />
@@ -342,6 +369,7 @@ export function Chats() {
         user={user}
         channels={channels}
         onUserUpdate={(user: any) => setUser(user)}
+        notifications={userNotifications}
       />
 
       <div className={`h-screen w-full flex flex-col items-center transition-all overflow-x-hidden ${navOpen ? 'pr-[20rem]' : ''}`}>
