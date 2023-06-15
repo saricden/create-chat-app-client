@@ -300,3 +300,26 @@ export async function addUserPushSubscription(push_subscription: string) {
 
   return false;
 }
+
+export async function getUserNotifications() {
+  try {
+    const accountData = await account.get();
+    const auth_id = accountData.$id;
+    const notificationsData = await db.listDocuments(
+      'chat',
+      'notifications',
+      [
+        q.equal('for_user_id', [auth_id]),
+        q.equal('read', false),
+        q.orderAsc('posted_at')
+      ]
+    );
+
+    return notificationsData.documents;
+  }
+  catch (e) {
+    console.warn(e);
+  }
+
+  return [];
+}

@@ -11,3 +11,5 @@ Minimum Hackathon TODO:
     ☐ Admin - Enforce muting restriction serverside
     ☐ Admin - ban users
     ☐ Admin - unsend messages
+    ☐ Enforce string size limits clientside (username, messages, bio, etc.)
+    ☐ Clean up things with components

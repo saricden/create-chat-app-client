@@ -2,7 +2,7 @@ import { redirect, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 import { Loader } from '../components/Loader';
 import { addMessageListener, getChannels, getLatestMessages } from '../utils/chat';
-import { addUserUpdateListener, getUserData } from '../utils/account';
+import { addUserUpdateListener, getUserData, getUserNotifications } from '../utils/account';
 import { useEffect, useRef, useState } from 'react';
 import { MessageBar } from '../components/MessageBar';
 import { ID, db, storage } from '../utils/appwrite';
@@ -269,6 +269,7 @@ export function Chats() {
     async function initChats() {
       const user = await getUserData();
       const channels = await getChannels();
+      const notifications = await getUserNotifications();
       let initMessages: any = {};
 
       if (user === null) {
@@ -304,13 +305,15 @@ export function Chats() {
               }
             }
           }
-
-          setUser(user);
-          setChannels(channels);
-          setMessages(initMessages);
-          scrollToBottom('smooth');
         }
       }
+
+      console.log(notifications);
+      
+      setUser(user);
+      setChannels(channels);
+      setMessages(initMessages);
+      scrollToBottom('smooth');
 
       // @ts-ignore
       addUserUpdateListener(user.auth_id, ({ events, payload: userUpdate }) => {
