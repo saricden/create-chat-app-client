@@ -1,4 +1,3 @@
-import nl2br from "react-nl2br";
 import { Navbar } from "../components/Navbar";
 import { AvatarSelect } from "../components/AvatarSelect";
 import { redirect, useNavigate } from "react-router-dom";
@@ -24,7 +23,7 @@ export function Register() {
 
   return (
     <>
-      <Navbar locked />
+      <Navbar locked notifications={[]} />
 
       <main className={`relative pt-20 w-full min-h-screen flex flex-col items-center p-4`}>
         <div className={`w-full max-w-sm flex flex-col items-center justify-center`}>
