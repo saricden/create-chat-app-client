@@ -91,7 +91,7 @@ export async function addUserUpdateListener(auth_id: string, callback: (payload:
     if (userData.documents.length > 0) {
       const [user] = userData.documents;
       const {$id: userDocId} = user;
-      const event = `databases.chat.collections.users.documents.${userDocId}.update`;
+      const event = `databases.chat.collections.users.documents.${userDocId}`;
       return client.subscribe(event, callback);
     }
   }

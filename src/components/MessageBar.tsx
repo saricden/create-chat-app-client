@@ -20,9 +20,11 @@ interface MessageBarProps {
   onChange: Function
   onSend: Function
   navOpen: boolean
+  placeholder?: string
+  disabled?: boolean
 }
 
-export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) {
+export function MessageBar({ msg, onChange, onSend, navOpen, placeholder, disabled }: MessageBarProps) {
   const doAudio = (msg.trim().length === 0);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [record, setRecord] = useState(false);
@@ -213,7 +215,7 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
   
   return (
     <div
-      className={`z-40 fixed bottom-0 left-0 w-full flex flex-row justify-center overflow-visible transition-all ${navOpen ? 'pr-[20rem]' : ''}`}
+      className={`z-40 fixed bottom-0 left-0 w-full flex flex-row justify-center overflow-visible transition-all ${navOpen ? 'pr-[20rem]' : ''} ${disabled ? 'opacity-40' : ''}`}
     >
       <div className={`relative w-full max-w-5xl p-2 flex flex-row items-end overflow-visible`}>
         {
@@ -249,7 +251,8 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
             onKeyDown={handleSearchSelect}
             maxRows={4}
             ref={inputRef}
-            disabled={record}
+            placeholder={placeholder}
+            disabled={disabled || record}
           />
 
           <div className={`w-full flex flex-row items-center overflow-hidden bg-black rounded-md transition-all ${(waveform === null || record) ? 'h-0' : 'h-8 mt-2' }`}>
@@ -279,7 +282,7 @@ export function MessageBar({ msg, onChange, onSend, navOpen }: MessageBarProps) 
         <button
           className={`w-[44px] h-[44px] text-white rounded-md flex items-center justify-center overflow-hidden transition-all ${(record || startingRecord) ? 'bg-red-500 animate-pulse' : 'bg-black'}`}
           onClick={handleActionBtnClick}
-          disabled={processing}
+          disabled={disabled || processing}
         >
           {
             processing

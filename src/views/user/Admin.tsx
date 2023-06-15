@@ -3,6 +3,7 @@ import { CreateChannel } from './admin/CreateChannel';
 import { EditChannel } from './admin/EditChannel';
 import { RestoreChannel } from './admin/RestoreChannel';
 import { MuteUser } from './admin/MuteUser';
+import { UnMuteUser } from './admin/UnMuteUser';
 
 interface AdminProps {
   menu: string
@@ -18,13 +19,16 @@ export function Admin({ menu, setMenu }: AdminProps) {
     return <EditChannel />;
   }
   else if (menu === 'archive-channel') {
-    return <ArchiveChannel />
+    return <ArchiveChannel />;
   }
   else if (menu === 'restore-channel') {
     return <RestoreChannel />;
   }
   else if (menu === 'mute-user') {
-    return <MuteUser onSubmit={() => setMenu('')} />
+    return <MuteUser onSubmit={() => setMenu('')} />;
+  }
+  else if (menu === 'unmute-user') {
+    return <UnMuteUser onSubmit={() => setMenu('')} />;
   }
 
   return (
@@ -66,6 +70,13 @@ export function Admin({ menu, setMenu }: AdminProps) {
         onClick={() => setMenu('mute-user')}
       >
         Mute User
+      </button>
+
+      <button
+        className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center`}
+        onClick={() => setMenu('unmute-user')}
+      >
+        Unmute User
       </button>
 
       <button

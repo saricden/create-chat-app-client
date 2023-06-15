@@ -9,6 +9,7 @@ import { ID, db, storage } from '../utils/appwrite';
 import { UserProfile } from '../components/UserProfile';
 import { X } from 'react-feather';
 import { Message } from '../components/Message';
+import { secondsToDHMS } from '../utils/helpers';
 // import { Loader2 } from '../components/Loader2';
 
 export function Chats() {
@@ -32,6 +33,8 @@ export function Chats() {
   const [profile, setProfile] = useState<any>(null);
   const [navOpen, setNavOpen] = useState(window.innerWidth >= 700);
   const [userMuted, setUserMuted] = useState(false);
+  const [mutePlaceholder, setMutePlaceholder] = useState('');
+  const [muteTimer, setMuteTimer] = useState<number | null>(null);
 
   function cacheUser(userId: string, userData: any) {
     setUserCache((cache: any) => ({
@@ -186,6 +189,43 @@ export function Chats() {
     }
   }
 
+  function handleMutedUser(user: any) {
+    if (user.muted_until) {
+      const mutedUntil = new Date(user.muted_until);
+      const isMuted = (mutedUntil > new Date());
+
+      if (isMuted) {
+        if (muteTimer) {
+          clearInterval(muteTimer);
+        }
+        setUserMuted(true);
+
+        setMuteTimer(setInterval(() => {
+          const now = new Date();
+          const doUnmute = (now > mutedUntil);
+
+          if (doUnmute && muteTimer) {
+            clearInterval(muteTimer);
+            setUserMuted(false);
+            setMuteTimer(null);
+          }
+          else {
+            const mutedFor = (mutedUntil.getTime() / 1000 - now.getTime() / 1000);
+            setMutePlaceholder(`Muted for ${secondsToDHMS(mutedFor)}`);
+          }
+        }, 500));
+      }
+    }
+    else {
+      setUserMuted(false);
+
+      if (muteTimer) {
+        clearInterval(muteTimer);
+        setMuteTimer(null);
+      }
+    }
+  }
+
   useEffect(() => {
     if (messagePanelRef && messagePanelRef.current) {
       const {scrollHeight} = messagePanelRef.current;
@@ -220,7 +260,9 @@ export function Chats() {
   }, [handleNewMessage]);
 
   useEffect(() => {
-    console.log(user);
+    if (user) {
+      handleMutedUser(user);
+    }
   }, [user]);
 
   useEffect(() => {
@@ -269,6 +311,15 @@ export function Chats() {
           scrollToBottom('smooth');
         }
       }
+
+      // @ts-ignore
+      addUserUpdateListener(user.auth_id, ({ events, payload: userUpdate }) => {
+        const event = events[0].split('.')[events[0].split('.').length - 1];
+
+        if (event === 'update') {
+          handleMutedUser(userUpdate);
+        }
+      });
     }
     
     initChats();
@@ -330,6 +381,8 @@ export function Chats() {
         onChange={(val: string) => setMessage(val)}
         onSend={sendMessage}
         navOpen={navOpen}
+        placeholder={userMuted ? mutePlaceholder : ''}
+        disabled={userMuted}
       />
 
       <div

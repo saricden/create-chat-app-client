@@ -1,10 +1,13 @@
 Minimum Hackathon TODO:
-  ☐ Admin - mute users
-  ☐ Admin - ban users
-  ☐ Admin - unsend messages
+  ✔ Admin - mute users @done(23-06-14 20:09)
   ☐ Notifications - in-app tray
   ☐ Notifications - scroll to message and load up + down (1)
   ☐ Notifications - scroll down to load down
   ☐ Notifications - push action (1)
-  ☐ Refactor "add ons" (Speechly, openai)
   ☐ Bots - GPT integration
+  ☐ Refactor "add ons" (Speechly, openai)
+
+  ☐ Create GH issues for outstanding tasks:
+    ☐ Admin - Enforce muting restriction serverside
+    ☐ Admin - ban users
+    ☐ Admin - unsend messages

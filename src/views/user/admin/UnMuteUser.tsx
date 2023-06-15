@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Select, { StylesConfig } from 'react-select';
 import { Loader } from '../../../components/Loader';
-import { getAllUsers, muteUser } from '../../../utils/admin';
+import { getAllUsers, unmuteUser } from '../../../utils/admin';
 import { getUserData } from '../../../utils/account';
 
 interface MuteUserProps {
@@ -55,7 +55,7 @@ const selectStyles: StylesConfig = {
   })
 };
 
-export function MuteUser({ onSubmit }: MuteUserProps) {
+export function UnMuteUser({ onSubmit }: MuteUserProps) {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<any>([]);
   const [selectedUser, setSelectedUser] = useState<any>(null);
@@ -63,45 +63,6 @@ export function MuteUser({ onSubmit }: MuteUserProps) {
     value: c.auth_id,
     label: `${c.username} (${c.auth_id})`
   }));
-  const muteOptions = [
-    {
-      value: 1000 * 60 * 30,
-      label: '30 minutes'
-    },
-    {
-      value: 1000 * 60 * 60,
-      label: '1 hour'
-    },
-    {
-      value: 1000 * 60 * 60 * 4,
-      label: '4 hours'
-    },
-    {
-      value: 1000 * 60 * 60 * 8,
-      label: '8 hours'
-    },
-    {
-      value: 1000 * 60 * 60 * 24,
-      label: '1 day'
-    },
-    {
-      value: 1000 * 60 * 60 * 24 * 3,
-      label: '3 days'
-    },
-    {
-      value: 1000 * 60 * 60 * 24 * 7,
-      label: '1 week'
-    },
-    {
-      value: 1000 * 60 * 60 * 24 * 14,
-      label: '2 weeks'
-    },
-    {
-      value: 1000 * 60 * 60 * 24 * 30,
-      label: '1 month'
-    }
-  ];
-  const [selectedMutePeriod, setSelectedMutePeriod] = useState<any>(null);
 
   useEffect(() => {
     async function loadUsers() {
@@ -120,9 +81,8 @@ export function MuteUser({ onSubmit }: MuteUserProps) {
   async function doMuteUser() {
     setLoading(true);
 
-    await muteUser(
-      selectedUser.value,
-      selectedMutePeriod.value
+    await unmuteUser(
+      selectedUser.value
     );
     
     onSubmit();
@@ -138,10 +98,10 @@ export function MuteUser({ onSubmit }: MuteUserProps) {
 
   return (
     <div className={`flex flex-col h-full items-center`}>
-      <header className={`text-xl mb-2`}>Mute User</header>
+      <header className={`text-xl mb-2`}>Unmute User</header>
 
       <p className={`mb-5`}>
-        Muting a user will temporarily disable them from sending messages and interacting on this server.
+        Unmuting a user will allow them to send messages and interact on the server again.
       </p>
 
       <Select
@@ -154,23 +114,12 @@ export function MuteUser({ onSubmit }: MuteUserProps) {
         className={`mb-4`}
       />
 
-      <Select
-        options={muteOptions}
-        placeholder="Mute for..."
-        styles={selectStyles}
-        value={selectedMutePeriod}
-        onChange={(mp: any) => setSelectedMutePeriod(mp)}
-        isSearchable
-        className={`mb-4 transition-all ${selectedUser === null ? 'opacity-50' : ''}`}
-        isDisabled={selectedUser === null}
-      />
-
       <button
-        className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-red-500 text-red-500 text-center transition-all ${(selectedUser === null || selectedMutePeriod === null) ? 'opacity-50' : ''}`}
+        className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-green-500 text-green-500 text-center transition-all ${(selectedUser === null) ? 'opacity-50' : ''}`}
         onClick={doMuteUser}
-        disabled={(selectedUser === null || selectedMutePeriod === null)}
+        disabled={(selectedUser === null)}
       >
-        Mute User
+        Unmute User
       </button>
 
     </div>

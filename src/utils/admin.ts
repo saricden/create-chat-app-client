@@ -127,3 +127,32 @@ export async function muteUser(auth_id: string, mutePeriod: number) {
     console.warn(e);
   }
 }
+
+export async function unmuteUser(auth_id: string) {
+  try {
+    const userData = await db.listDocuments(
+      'chat',
+      'users',
+      [
+        q.equal('auth_id', [auth_id])
+      ]
+    );
+
+    if (userData && userData.documents.length === 1) {
+      const [user] = userData.documents;
+      const {$id: userId} = user;
+
+      await db.updateDocument(
+        'chat',
+        'users',
+        userId,
+        {
+          muted_until: null
+        }
+      );
+    }
+  }
+  catch (e) {
+    console.warn(e);
+  }
+}
