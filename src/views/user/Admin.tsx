@@ -79,7 +79,7 @@ export function Admin({ menu, setMenu }: AdminProps) {
         Unmute User
       </button>
 
-      <button
+      {/* <button
         className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center`}
       >
         Ban User
@@ -91,7 +91,7 @@ export function Admin({ menu, setMenu }: AdminProps) {
         className={`w-full px-4 py-2 border-2 rounded-md mb-3 border-white text-white text-center`}
       >
         Unsend Message
-      </button>
+      </button> */}
     </div>
   );
 }
