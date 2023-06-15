@@ -1,36 +1,10 @@
 Minimum Hackathon TODO:
-  ✔ Add audio files + waveform rendering & playback to sent messages @done(23-06-06 04:34)
-
-  ☐ Admin panel and server management
-    ✔ Manage channels @done(23-06-09 02:52)
-      ✔ Create channels @done(23-06-08 22:51)
-      ✔ Archive channels @done(23-06-09 02:52)
-      ✔ Edit channels @done(23-06-09 02:52)
-    ☐ Mute users
-    ☐ Ban users
-    ☐ Unsend messages
-
-  ✔ Begin the npx create script using the server SDKs @done(23-06-08 20:53)
-
-  ☐ Notification tray and user @ tagging system (with push notifications in compatible browsers)
-  
-  ✔ Desktop styling @done(23-06-09 04:45)
-
-  ☐ Interactive help tutorial which can be launched again from the user menu at any time
-
-  ☐ Settings (if applicable)
-
-  ☐ Clean up codebase (components, types, etc.)
-  
-  ☐ Final touches on npx create script
-    ✔ Add admin team @done(23-06-14 00:22)
-    ✔ Update write permissions for admin team @done(23-06-14 00:22)
-    ☐ System to account for DB downtime periods
-      ☐ Email notification when DB ready?
-    ✔ Create first admin user via script @done(23-06-14 06:26)
-    ✔ Refactor to use .env.local instead of chat.config.json @done(23-06-14 00:22)
-    ✔ Full review of DB structures (permissions, functions, etc) @done(23-06-14 00:23)
-    ☐ Add icon config and image generation for required PWA / favicon images
-    ☐ Add colour config
-  
-  ☐ Welcome messages!
+  ☐ Admin - mute users
+  ☐ Admin - ban users
+  ☐ Admin - unsend messages
+  ☐ Notifications - in-app tray
+  ☐ Notifications - scroll to message and load up + down (1)
+  ☐ Notifications - scroll down to load down
+  ☐ Notifications - push action (1)
+  ☐ Refactor "add ons" (Speechly, openai)
+  ☐ Bots - GPT integration

@@ -2,7 +2,7 @@ import { redirect, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 import { Loader } from '../components/Loader';
 import { addMessageListener, getChannels, getLatestMessages } from '../utils/chat';
-import { getUserData } from '../utils/account';
+import { addUserUpdateListener, getUserData } from '../utils/account';
 import { useEffect, useRef, useState } from 'react';
 import { MessageBar } from '../components/MessageBar';
 import { ID, db, storage } from '../utils/appwrite';
@@ -31,6 +31,7 @@ export function Chats() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [profile, setProfile] = useState<any>(null);
   const [navOpen, setNavOpen] = useState(window.innerWidth >= 700);
+  const [userMuted, setUserMuted] = useState(false);
 
   function cacheUser(userId: string, userData: any) {
     setUserCache((cache: any) => ({
@@ -219,6 +220,10 @@ export function Chats() {
   }, [handleNewMessage]);
 
   useEffect(() => {
+    console.log(user);
+  }, [user]);
+
+  useEffect(() => {
     async function initChats() {
       const user = await getUserData();
       const channels = await getChannels();
@@ -257,12 +262,11 @@ export function Chats() {
               }
             }
           }
-  
+
           setUser(user);
           setChannels(channels);
           setMessages(initMessages);
           scrollToBottom('smooth');
-  
         }
       }
     }

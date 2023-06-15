@@ -1,4 +1,5 @@
-import { account, storage, ID, db, q, functions, teams } from "./appwrite";
+import { RealtimeResponseEvent } from "appwrite";
+import { account, storage, ID, db, q, functions, teams, client } from "./appwrite";
 
 /** Gets useful data for the currently logged in user, or the user provided by Id
  * Returns null if something goes wrong, or:
@@ -67,6 +68,31 @@ export async function getUserData(userId: string | null = null) {
           avatar
         };
       }
+    }
+  }
+  catch (e) {
+    console.warn(e);
+  }
+
+  return null;
+}
+
+export async function addUserUpdateListener(auth_id: string, callback: (payload: RealtimeResponseEvent<unknown>) => void) {
+  try {
+    const userData = await db.listDocuments(
+      'chat',
+      'users',
+      [
+        // @ts-ignore
+        q.equal('auth_id', [auth_id])
+      ]
+    );
+  
+    if (userData.documents.length > 0) {
+      const [user] = userData.documents;
+      const {$id: userDocId} = user;
+      const event = `databases.chat.collections.users.documents.${userDocId}.update`;
+      return client.subscribe(event, callback);
     }
   }
   catch (e) {
